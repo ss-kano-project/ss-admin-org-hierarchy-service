@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: admin-org-hierarchy-service  
+  config:
+    import: optional:configserver:http://config-server-svc:80
+  datasource:
+    url: jdbc:postgresql://52.66.98.25:5433/global_uat
+    username: ubuntu
+    password: ubuntu@deepmindz2023
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 10
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update # or create, create-drop, none
+    show-sql: true # Set to true to show SQL queries in the console
+    
+#  config:
+#    import: configserver:http://localhost:9296
+
+
+
+server:
+  port: 8082
+  max-http-header-size: 20000B
+  
+#  
+logging:
+#  file.name: C://Users//ADMIN//Desktop//FHI-Global//logs.log
+   file.name: logs.log
+  
+#  logging:
+   level:
+    org:
+      springframework:
+        security: DEBUG
+    hibernate: DEBUG
+
+#  file: /mylogfile.log

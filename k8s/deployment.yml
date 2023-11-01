@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-org-hierarchy-service
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: admin-org-hierarchy-service
+  template:
+    metadata:
+      labels:
+        app: admin-org-hierarchy-service
+    spec:
+      containers:
+        - name: admin-org-hierarchy-service
+          image: IMAGE_URL
+          ports:
+            - containerPort: 9297
+          env:
+            - name: EUREKA_SERVER_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  key: eureka_server_address
+                  name: eureka-cm
+            - name: CONFIG_SERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  key: config_url
+                  name: config-cm
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin-org-hierarchy-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: admin-org-hierarchy-app
+  ports:
+    - port: 80
+      targetPort: 9297
