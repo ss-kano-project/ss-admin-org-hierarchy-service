@@ -11,7 +11,7 @@ node{
     branches:[[name:'*/main']],
     extension:[],
     userRemoteConfigs:[[credentialsId:'git',
-    url:'https://github.com/FHI-SS-WhiteLabeledApplication/admin-org-hier-service.git'
+    url:'https://github.com/SS-Whitelabel/ss-admin-org-hierarchy-service.git'
     ]]])
   }
   stage('Build and Push Image') {
