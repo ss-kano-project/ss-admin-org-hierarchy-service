@@ -47,6 +47,8 @@ public class SSUser {
 	@NotEmpty
 	@NotNull
 	private String linkedZone;				// Include the immediate linked zone
+
+	private boolean isTeamLead;
 	
 	private String[] linkedSupervisors;
 	

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.deepmindz.adminorghierservice.dto.AllZonesByRelationshipIdDTO;
 import co.deepmindz.adminorghierservice.dto.CreateZoneListDTO;
 import co.deepmindz.adminorghierservice.dto.CustomHttpResponse;
+import co.deepmindz.adminorghierservice.dto.ParentZoneDTO;
 import co.deepmindz.adminorghierservice.dto.ZoneListFiltrationDTO;
 import co.deepmindz.adminorghierservice.dto.ZoneListFiltrationResponseDTO;
 import co.deepmindz.adminorghierservice.dto.Zones_list_RequestDto;
@@ -133,15 +134,17 @@ public class Zones_list_Controller {
 			return CustomHttpResponse.responseBuilder("All Available Zones by Relationship Id", HttpStatus.OK,
 					zonelist);
 		else {
-			return CustomHttpResponse.responseBuilder("Zones not available", HttpStatus.NOT_FOUND,
-					zonelist);
+			return CustomHttpResponse.responseBuilder("Zones not available", HttpStatus.NOT_FOUND, zonelist);
 		}
 	}
 
 	@GetMapping("/parent-zone")
 	public ResponseEntity<?> getParentZoneList() {
-		return CustomHttpResponse.responseBuilder("Parent Zone Id", HttpStatus.OK,
-				zoneListService.getParentZoneList().get(0));
+		List<ParentZoneDTO> parentZoneList = zoneListService.getParentZoneList();
+		if (parentZoneList == null || parentZoneList.isEmpty())
+			return CustomHttpResponse.responseBuilder("Parent Zone Id", HttpStatus.OK, parentZoneList);
+
+		return CustomHttpResponse.responseBuilder("Parent Zone Id", HttpStatus.OK, parentZoneList.get(0));
 	}
 
 	@GetMapping("/get-all-zonelist")
