@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.exception.ResourceAlreadyExist;
@@ -144,8 +145,25 @@ public class SSUserController {
 	// return the sub-ordinates of this ssuser
 	@GetMapping("/get-subordinate-by-relationship-id")
 	public Object getSubOrdinateRoles(@RequestParam String ssUserID) {
-		return ssUserService.getSubordinateRoleSSUsers(ssUserID);
+	  List<SSUserResponseDto> subordinateRoleSSUsers = ssUserService.getSubordinateRoleSSUsers(ssUserID);
+	 return subordinateRoleSSUsers;
 	}
+	
+	
+	/*
+	 * will be called In Teams mode only
+	 * These members will be used in ISS Team creation
+	 * They are not subordinates, they are members from same zone.
+	 */
+	@GetMapping("/members-by-relationship-id")
+	public Object getTeamMemberByZoneId(@RequestParam String zoneId) {
+		 List<MemberResponseDto> teamMemberByZoneId = ssUserService.getTeamMemberByZoneId(zoneId);
+		 if (teamMemberByZoneId==null) {
+			 return CustomHttpResponse.responseBuilder("No Team member found in this zone..!!", HttpStatus.OK, teamMemberByZoneId);
+		}
+		 return  teamMemberByZoneId;
+	}
+	 
 
 	// return the supervisor of
 	@GetMapping("/get-user-by-zone-id")

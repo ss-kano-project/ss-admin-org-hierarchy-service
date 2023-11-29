@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.models.Roles;
@@ -26,7 +27,7 @@ public class SSUserUtil {
 
 	@Autowired
 	RolesRepository rolesRepository;
-	
+
 	@Autowired
 	SSUserRepository ssUserRepository;
 
@@ -71,21 +72,50 @@ public class SSUserUtil {
 			allLinkedZoneNames.add(zone.split(":")[0]);
 		}
 //		Collections.reverse(allLinkedZoneNames);
-		
+
 		List<SSUser> supervisors = ssUserRepository.findAllById(List.of(user.getLinkedSupervisors()));
 		Map<String, String> idWithSSUserNameMap = new HashMap<>();
 		for (SSUser user2 : supervisors)
 			idWithSSUserNameMap.put(user2.getUser_id(), user2.getName());
-		
+
 		List<String> supervisorslist = new ArrayList<>();
 		for (String supervisor : user.getLinkedSupervisors()) {
 			supervisorslist.add(idWithSSUserNameMap.get(supervisor));
 //			supervisorslist.add(supervisor);
 		}
-		
+
 		return new SSUserResponseDto(user.getUser_id(), user.getName(), idWithRoleNameMap.get(user.getRole_id()),
 				user.getUsername(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
 				supervisorslist.toArray(new String[supervisorslist.size()]), user.getCreated_at());
+	}
+
+	public MemberResponseDto mapEntityToMemberResponseDto(SSUser user) {
+		List<Roles> allRoles = rolesRepository.findAll();
+		Map<String, String> idWithRoleNameMap = new HashMap<>();
+		for (Roles roles : allRoles)
+			idWithRoleNameMap.put(roles.getRole_id(), roles.getTitle());
+
+		List<String> allLinkedZoneNames = new ArrayList<>();
+		for (String zone : user.getLinkedParentZones()) {
+			allLinkedZoneNames.add(zone.split(":")[0]);
+		}
+//		Collections.reverse(allLinkedZoneNames);
+
+		List<SSUser> supervisors = ssUserRepository.findAllById(List.of(user.getLinkedSupervisors()));
+		Map<String, String> idWithSSUserNameMap = new HashMap<>();
+		for (SSUser user2 : supervisors)
+			idWithSSUserNameMap.put(user2.getUser_id(), user2.getName());
+
+		List<String> supervisorslist = new ArrayList<>();
+		for (String supervisor : user.getLinkedSupervisors()) {
+			supervisorslist.add(idWithSSUserNameMap.get(supervisor));
+//			supervisorslist.add(supervisor);
+		}
+
+		return new MemberResponseDto(user.getUser_id(), user.getName(), idWithRoleNameMap.get(user.getRole_id()),
+				user.getUsername(), user.getStatus(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
+
+				user.getCreated_at());
 	}
 
 	public SSUserResponseDto mapEntityToResponseDtoForAllSSUser(SSUser user, Map<String, String> idWithSSUserNameMap) {

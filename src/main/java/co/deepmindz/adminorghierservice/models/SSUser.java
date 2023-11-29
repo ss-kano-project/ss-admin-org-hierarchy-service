@@ -32,6 +32,10 @@ public class SSUser {
 	
 	@NotEmpty
 	@NotNull
+	private String status;
+	
+	@NotEmpty
+	@NotNull
 	private String role_id;
 	
 	@NotEmpty

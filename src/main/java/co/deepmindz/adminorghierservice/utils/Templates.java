@@ -4,6 +4,10 @@ public class Templates {
 	public enum LOGINMODES {
 		Two_FA, USER_CREDENTIALS
 	}
+	
+	public enum USERSTATUS {
+		ACTIVE, OCCUPIED
+	}
 
 	public enum VISITTYPES {
 		Team_Visit, Individual_Visit

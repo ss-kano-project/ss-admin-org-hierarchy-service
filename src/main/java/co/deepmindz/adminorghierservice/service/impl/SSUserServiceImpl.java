@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.deepmindz.adminorghierservice.dto.ListSSUserZonesResponseDto;
+import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.models.SSUser;
@@ -134,4 +135,17 @@ public class SSUserServiceImpl implements SSUserService {
 		System.out.println(zoneList);
 		return zoneList;
 	}
-}
+
+	@Override
+	public List<MemberResponseDto> getTeamMemberByZoneId(String zoneId) {
+		List<SSUser> teamMemberList = ssUserRepository.getTeamMemberByZoneId(zoneId);
+		if ( teamMemberList.isEmpty() || teamMemberList==null ) {
+			return null;
+		}
+		List<MemberResponseDto> response = new ArrayList<>();
+		for (SSUser user : teamMemberList)
+			response.add(ssUserUtil.mapEntityToMemberResponseDto(user));
+		return response;
+	}
+	}
+
