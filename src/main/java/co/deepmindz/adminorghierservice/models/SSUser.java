@@ -26,8 +26,8 @@ public class SSUser {
 	@UuidGenerator
 	private String id;
 
-	@NotEmpty
-	@NotNull
+//	@NotEmpty
+//	@NotNull
 	private String status;
 
 	@NotEmpty
