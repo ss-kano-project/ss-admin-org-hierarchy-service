@@ -35,7 +35,7 @@ public class SSUserUtil {
 
 		String immediateLinkedZone = null;
 		SSUser ssUser = new SSUser();
-		ssUser.setName(ssUserDto.getName());
+//		ssUser.setName(ssUserDto.getName());
 		ssUser.setRole_id(ssUserDto.getRole());
 		List<String> linkedParentZones = new ArrayList<>();
 		for (int i = 0; i < ssUserDto.getLinked_zones().length; i++) {
@@ -76,7 +76,7 @@ public class SSUserUtil {
 		List<SSUser> supervisors = ssUserRepository.findAllById(List.of(user.getLinkedSupervisors()));
 		Map<String, String> idWithSSUserNameMap = new HashMap<>();
 		for (SSUser user2 : supervisors)
-			idWithSSUserNameMap.put(user2.getUser_id(), user2.getName());
+			idWithSSUserNameMap.put(user2.getId(), user2.getUsername());
 
 		List<String> supervisorslist = new ArrayList<>();
 		for (String supervisor : user.getLinkedSupervisors()) {
@@ -84,8 +84,9 @@ public class SSUserUtil {
 //			supervisorslist.add(supervisor);
 		}
 
-		return new SSUserResponseDto(user.getUser_id(), user.getName(), idWithRoleNameMap.get(user.getRole_id()),
-				user.getUsername(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
+		return new SSUserResponseDto(user.getId(), idWithRoleNameMap.get(user.getRole_id()),
+				user.getUsername(), 
+//				allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
 				supervisorslist.toArray(new String[supervisorslist.size()]), user.getCreated_at());
 	}
 
@@ -104,7 +105,7 @@ public class SSUserUtil {
 		List<SSUser> supervisors = ssUserRepository.findAllById(List.of(user.getLinkedSupervisors()));
 		Map<String, String> idWithSSUserNameMap = new HashMap<>();
 		for (SSUser user2 : supervisors)
-			idWithSSUserNameMap.put(user2.getUser_id(), user2.getName());
+			idWithSSUserNameMap.put(user2.getId(), user2.getUsername());
 
 		List<String> supervisorslist = new ArrayList<>();
 		for (String supervisor : user.getLinkedSupervisors()) {
@@ -112,7 +113,7 @@ public class SSUserUtil {
 //			supervisorslist.add(supervisor);
 		}
 
-		return new MemberResponseDto(user.getUser_id(), user.getName(), idWithRoleNameMap.get(user.getRole_id()),
+		return new MemberResponseDto(user.getId(), user.getUsername(), idWithRoleNameMap.get(user.getRole_id()),
 				user.getUsername(), user.getStatus(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
 
 				user.getCreated_at());
@@ -137,8 +138,9 @@ public class SSUserUtil {
 //			supervisors.add(supervisor);
 		}
 
-		return new SSUserResponseDto(user.getUser_id(), user.getName(), idWithRoleNameMap.get(user.getRole_id()),
-				user.getUsername(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
+		return new SSUserResponseDto(user.getId(),  idWithRoleNameMap.get(user.getRole_id()),
+				user.getUsername(), 
+//				allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
 				supervisors.toArray(new String[supervisors.size()]), user.getCreated_at());
 	}
 }
