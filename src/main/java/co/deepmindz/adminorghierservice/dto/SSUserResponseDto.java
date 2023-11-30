@@ -15,7 +15,7 @@ public class SSUserResponseDto {
 
 	private String id;
 
-//	private String name;
+	private String name;
 
 	private String role;
 
@@ -25,7 +25,7 @@ public class SSUserResponseDto {
 
 	private String[] linked_zones;
 
-//	private String[] linked_supervisors;
+	private String[] linked_supervisors;
 
 	private Timestamp created_at;
 }

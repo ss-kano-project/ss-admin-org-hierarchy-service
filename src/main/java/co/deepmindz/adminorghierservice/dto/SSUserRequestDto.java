@@ -15,9 +15,9 @@ import lombok.ToString;
 @ToString
 public class SSUserRequestDto {
 
-//	@NotEmpty
-//	@NotNull
-//	private String name;
+	@NotEmpty
+	@NotNull
+	private String name;
 
 	@NotEmpty
 	@NotNull

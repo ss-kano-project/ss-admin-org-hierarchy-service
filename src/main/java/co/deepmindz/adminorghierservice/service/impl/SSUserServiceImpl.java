@@ -62,8 +62,8 @@ public class SSUserServiceImpl implements SSUserService {
 		SSUser user = ssUserUtil.mapRequestDtoToEntity(ssUserDto, loginmode);
 		SSUser createdUser = ssUserRepository.save(user);
 
-		return new SSUserResponseDto(createdUser.getId(), createdUser.getRole_id(),
-				createdUser.getUsername(), createdUser.getLinkedParentZones(), 
+		return new SSUserResponseDto(createdUser.getUser_id(), user.getName(), createdUser.getRole_id(),
+				createdUser.getUsername(), createdUser.getLinkedParentZones(), createdUser.getLinkedSupervisors(),
 				createdUser.getCreated_at());
 	}
 
@@ -117,7 +117,7 @@ public class SSUserServiceImpl implements SSUserService {
 			List<SSUser> supervisors = ssUserRepository.findAllById(List.of(user.getLinkedSupervisors()));
 			Map<String, String> idWithSSUserNameMap = new HashMap<>();
 			for (SSUser user2 : supervisors)
-				idWithSSUserNameMap.put(user2.getId(), user2.getUsername());
+				idWithSSUserNameMap.put(user2.getUser_id(), user2.getName());
 			responseList.add(ssUserUtil.mapEntityToResponseDtoForAllSSUser(user, idWithSSUserNameMap));
 		}
 		return responseList;

@@ -24,11 +24,15 @@ public class SSUser {
 
 	@Id
 	@UuidGenerator
-	private String id;
+	private String user_id;
 
 //	@NotEmpty
 //	@NotNull
 	private String status;
+	
+	@NotEmpty
+	@NotNull
+	private String name;
 
 	@NotEmpty
 	@NotNull

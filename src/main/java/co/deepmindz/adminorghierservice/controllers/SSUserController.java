@@ -163,6 +163,13 @@ public class SSUserController {
 		}
 		 return  teamMemberByZoneId;
 	}
+	
+	
+//	@GetMapping("/update-by-ids")
+//	public Object updateUserByIds(@RequestBody {
+//	  List<SSUserResponseDto> subordinateRoleSSUsers = ssUserService.getSubordinateRoleSSUsers(ssUserID);
+//	 return subordinateRoleSSUsers;
+//	}
 	 
 
 	// return the supervisor of
