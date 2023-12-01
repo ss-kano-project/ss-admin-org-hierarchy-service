@@ -23,4 +23,8 @@ public interface SSUserRepository extends JpaRepository<SSUser, String> {
 	
 	@Query(value = "select s from SSUser s where s.linkedZone IN :zoneid")
 	public List<SSUser> getTeamMemberByZoneId(@Param("zoneid") String zoneId);
+
+	@Query(value = "select s from SSUser s where s.linkedZone IN :memberIds")
+	public List<SSUser> findByIds(@Param ("memberIds") String[] memberIds);
+	
 }

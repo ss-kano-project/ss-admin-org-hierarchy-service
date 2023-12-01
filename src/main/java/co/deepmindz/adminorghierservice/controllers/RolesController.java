@@ -2,6 +2,7 @@ package co.deepmindz.adminorghierservice.controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -100,7 +101,8 @@ public class RolesController {
 		}
 		HashMap<String, RolesResponseDto> idWithRolesMap = new HashMap<>();
 		HashMap<String, RolesResponseDto> idWithManagerObjectMap = new HashMap<>();
-		List<CustomDataTypes.relation> organizationRelation = new ArrayList<>();
+//		List<CustomDataTypes.relation> organizationRelation = new LinkArrayList<>();
+		List<CustomDataTypes.relation> organizationRelation = new LinkedList<>();
 		if (loginmode == null) {
 			RequestEntity<Void> request = RequestEntity.get(services[0] + "/admin-main/login-mode/current-loginMode-status")
 					.accept(MediaType.APPLICATION_JSON).build();

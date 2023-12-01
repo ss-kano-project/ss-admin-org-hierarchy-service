@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.naming.OperationNotSupportedException;
 
+import org.hibernate.query.NativeQuery.ReturnableResultNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
+import co.deepmindz.adminorghierservice.dto.UpdateMemberRequestDto;
 import co.deepmindz.adminorghierservice.exception.ResourceAlreadyExist;
 import co.deepmindz.adminorghierservice.resources.CustomHttpResponse;
 import co.deepmindz.adminorghierservice.service.RolesService;
@@ -156,20 +158,29 @@ public class SSUserController {
 	 * They are not subordinates, they are members from same zone.
 	 */
 	@GetMapping("/members-by-relationship-id")
-	public Object getTeamMemberByZoneId(@RequestParam String zoneId) {
+	public ResponseEntity<Object> getTeamMemberByZoneId(@RequestParam String zoneId) {
 		 List<MemberResponseDto> teamMemberByZoneId = ssUserService.getTeamMemberByZoneId(zoneId);
 		 if (teamMemberByZoneId==null) {
-			 return CustomHttpResponse.responseBuilder("No Team member found in this zone..!!", HttpStatus.OK, teamMemberByZoneId);
+			 return CustomHttpResponse.responseBuilder("No Team member found in this zone..!!", HttpStatus.OK, "");
 		}
-		 return  teamMemberByZoneId;
+		 return CustomHttpResponse.responseBuilder("All members in this zone..!!", HttpStatus.OK, teamMemberByZoneId);
 	}
 	
-	
-//	@GetMapping("/update-by-ids")
-//	public Object updateUserByIds(@RequestBody {
-//	  List<SSUserResponseDto> subordinateRoleSSUsers = ssUserService.getSubordinateRoleSSUsers(ssUserID);
-//	 return subordinateRoleSSUsers;
+//	@GetMapping("/members-by-relationship-id-forRestyCall")
+//	public Object getTeamMemberByZoneId(@RequestParam String zoneId) {
+//		 List<MemberResponseDto> teamMemberByZoneId = ssUserService.getTeamMemberByZoneId(zoneId);
+//		 if (teamMemberByZoneId==null) {
+//			 return CustomHttpResponse.responseBuilder("No Team member found in this zone..!!", HttpStatus.OK, "");
+//		}
+//		 return  teamMemberByZoneId;
 //	}
+	
+	
+	@GetMapping("/update-by-ids")
+	public Object updateUserByIds(@RequestBody UpdateMemberRequestDto memberDto) {
+	  List<SSUserResponseDto> ssUsers = ssUserService.updateUserByIds(memberDto.getSsUserId());
+	 return ssUsers;
+	}
 	 
 
 	// return the supervisor of
