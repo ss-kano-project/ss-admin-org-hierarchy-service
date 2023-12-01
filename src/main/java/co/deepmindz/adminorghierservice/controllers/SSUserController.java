@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.naming.OperationNotSupportedException;
 
-import org.hibernate.query.NativeQuery.ReturnableResultNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,7 @@ import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.dto.UpdateMemberRequestDto;
 import co.deepmindz.adminorghierservice.exception.ResourceAlreadyExist;
+import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.resources.CustomHttpResponse;
 import co.deepmindz.adminorghierservice.service.RolesService;
 import co.deepmindz.adminorghierservice.service.SSUserService;
@@ -111,7 +111,8 @@ public class SSUserController {
 	public ResponseEntity<Object> createSSUSer(@Valid @RequestBody SSUserRequestDto createSSUserData)
 			throws OperationNotSupportedException {
 		logger.info("SSUser.class : createSSUser() : " + createSSUserData);
-		RequestEntity<Void> request = RequestEntity.get(services[0] + "/admin-main/external-resource/check-user-base-resource")
+		RequestEntity<Void> request = RequestEntity
+				.get(services[0] + "/admin-main/external-resource/check-user-base-resource")
 				.accept(MediaType.APPLICATION_JSON).build();
 		if (restTemplate.exchange(request, responseType).getBody().get("data") == "true") {
 			throw new OperationNotSupportedException(
@@ -147,25 +148,23 @@ public class SSUserController {
 	// return the sub-ordinates of this ssuser
 	@GetMapping("/get-subordinate-by-relationship-id")
 	public Object getSubOrdinateRoles(@RequestParam String ssUserID) {
-	  List<SSUserResponseDto> subordinateRoleSSUsers = ssUserService.getSubordinateRoleSSUsers(ssUserID);
-	 return subordinateRoleSSUsers;
+		List<SSUserResponseDto> subordinateRoleSSUsers = ssUserService.getSubordinateRoleSSUsers(ssUserID);
+		return subordinateRoleSSUsers;
 	}
-	
-	
+
 	/*
-	 * will be called In Teams mode only
-	 * These members will be used in ISS Team creation
-	 * They are not subordinates, they are members from same zone.
+	 * will be called In Teams mode only These members will be used in ISS Team
+	 * creation They are not subordinates, they are members from same zone.
 	 */
 	@GetMapping("/members-by-relationship-id")
 	public ResponseEntity<Object> getTeamMemberByZoneId(@RequestParam String zoneId) {
-		 List<MemberResponseDto> teamMemberByZoneId = ssUserService.getTeamMemberByZoneId(zoneId);
-		 if (teamMemberByZoneId==null) {
-			 return CustomHttpResponse.responseBuilder("No Team member found in this zone..!!", HttpStatus.OK, "");
+		List<MemberResponseDto> teamMemberByZoneId = ssUserService.getTeamMemberByZoneId(zoneId);
+		if (teamMemberByZoneId == null) {
+			return CustomHttpResponse.responseBuilder("No Team member found in this zone..!!", HttpStatus.OK, teamMemberByZoneId);
 		}
-		 return CustomHttpResponse.responseBuilder("All members in this zone..!!", HttpStatus.OK, teamMemberByZoneId);
+		return CustomHttpResponse.responseBuilder("All members in this zone..!!", HttpStatus.OK, teamMemberByZoneId);
 	}
-	
+
 //	@GetMapping("/members-by-relationship-id-forRestyCall")
 //	public Object getTeamMemberByZoneId(@RequestParam String zoneId) {
 //		 List<MemberResponseDto> teamMemberByZoneId = ssUserService.getTeamMemberByZoneId(zoneId);
@@ -174,14 +173,16 @@ public class SSUserController {
 //		}
 //		 return  teamMemberByZoneId;
 //	}
-	
-	
-	@GetMapping("/update-by-ids")
-	public Object updateUserByIds(@RequestBody UpdateMemberRequestDto memberDto) {
-	  List<SSUserResponseDto> ssUsers = ssUserService.updateUserByIds(memberDto.getSsUserId());
-	 return ssUsers;
+
+	@PostMapping("/update-by-ids")
+	public ResponseEntity<Object> updateUserByIds(@RequestBody UpdateMemberRequestDto memberDto) {
+		List<SSUser> updateUserByIds = ssUserService.updateUserByIds(memberDto.getSsUserId());
+		if (updateUserByIds == null) {
+			return CustomHttpResponse.responseBuilder("No SSUser with this id's : ", HttpStatus.OK, "");
+		}
+		return CustomHttpResponse.responseBuilder("Details of SSUser : ", HttpStatus.OK, updateUserByIds);
+
 	}
-	 
 
 	// return the supervisor of
 	@GetMapping("/get-user-by-zone-id")

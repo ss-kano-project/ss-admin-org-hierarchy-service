@@ -11,6 +11,7 @@ import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.dto.UpdateMemberRequestDto;
 import co.deepmindz.adminorghierservice.dto.Zones_list_ResponseDto;
+import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.models.Zones_list;
 
 @Service
@@ -34,5 +35,5 @@ public interface SSUserService {
 	
 	List<MemberResponseDto> getTeamMemberByZoneId(String zoneId);
 
-	List<SSUserResponseDto> updateUserByIds(String[] memberDto);
+	List<SSUser> updateUserByIds(String[] memberDto);
 }

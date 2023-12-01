@@ -1,14 +1,11 @@
 package co.deepmindz.adminorghierservice.service.impl;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.apache.catalina.User;
-import org.bouncycastle.asn1.x509.AttCertIssuer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +13,6 @@ import co.deepmindz.adminorghierservice.dto.ListSSUserZonesResponseDto;
 import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
-import co.deepmindz.adminorghierservice.dto.UpdateMemberRequestDto;
 import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.models.Zones_list;
 import co.deepmindz.adminorghierservice.repository.RolesRepository;
@@ -26,6 +22,7 @@ import co.deepmindz.adminorghierservice.service.SSUserService;
 import co.deepmindz.adminorghierservice.utils.SSUserUtil;
 import co.deepmindz.adminorghierservice.utils.Templates;
 import co.deepmindz.adminorghierservice.utils.Zones_list_util;
+import jakarta.ws.rs.core.Response;
 
 @Service
 public class SSUserServiceImpl implements SSUserService {
@@ -77,7 +74,6 @@ public class SSUserServiceImpl implements SSUserService {
 //
 //		return zones_list_util.mapEntityToResponseDto(zones);
 //	}
-	
 
 	public List<SSUserResponseDto> getSubordinateRoleSSUsers(String roleID) {
 		List<SSUser> subUsers = ssUserRepository.findByLinkedSupervisors(new String[] { roleID });
@@ -144,46 +140,28 @@ public class SSUserServiceImpl implements SSUserService {
 	@Override
 	public List<MemberResponseDto> getTeamMemberByZoneId(String zoneId) {
 		List<SSUser> teamMemberList = ssUserRepository.getTeamMemberByZoneId(zoneId);
-		if ( teamMemberList.isEmpty() || teamMemberList==null ) {
-			return null;
-		}
 		List<MemberResponseDto> response = new ArrayList<>();
+		if (teamMemberList.isEmpty() || teamMemberList == null) {
+			return response;
+		}
+//		List<MemberResponseDto> response = new ArrayList<>();
 		for (SSUser user : teamMemberList)
 			response.add(ssUserUtil.mapEntityToMemberResponseDto(user));
 		return response;
 	}
 
 	@Override
-	public List<SSUserResponseDto> updateUserByIds(String[] memberIds) {
+	public List<SSUser> updateUserByIds(String[] memberIds) {
 		List<SSUser> findByIds = ssUserRepository.findByIds(memberIds);
-		List<SSUserResponseDto> response = new ArrayList<>();
-		
-//		for (SSUser user : findByIds)
-//			response.add(user);
-		
-		
-//		Map<String, String> linkedParentZone = new HashMap<>();
-//		for (SSUser user : findByIds)
-//			linkedParentZone.put(user.getLinkedZone(), user.getUsername());
-//		
-//		Map<String, String> linkedSupervisors = new HashMap<>();
-//		for (SSUser user2 : findByIds)
-//			linkedParentZone.put(user2.getUser_id(), user2.getUsername());
-////
-//		List<SSUserResponseDto> ssUserList = new ArrayList<>();
-//		for (SSUser ssuser : findByIds) {
-//			ssuser.setStatus(Templates.USERSTATUS.OCCUPIED.name());
-//			ssUserList.add(ssuser.getUser_id(),ssuser.getName(),ssuser.getRole_id(), ssuser.getUsername(), 
-//					linkedParentZone.get(ssuser.getUser_id()),
-////					ssuser.getLinkedParentZones(),
-//					
-//					ssuser.getLinkedSupervisors(),
-//					ssuser.getCreated_at());
-//
-//		}
-//		response.add(null)
-		return null;
-		
-	}
-	}
+		if (findByIds.isEmpty() || findByIds == null) {
+			return null;
+		}
+		for (SSUser ssuser : findByIds) {
+			ssuser.setStatus(Templates.USERSTATUS.OCCUPIED.name());
+			ssUserRepository.save(ssuser);
 
+		}
+		return findByIds;
+
+	}
+}
