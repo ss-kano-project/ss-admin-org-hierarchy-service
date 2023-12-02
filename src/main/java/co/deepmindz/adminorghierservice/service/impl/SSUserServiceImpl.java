@@ -157,15 +157,18 @@ public class SSUserServiceImpl implements SSUserService {
 	@Override
 	public ResponseEntity<Object> updateUserByIds(String[] memberIds) {
 		List<SSUser> findByIds = ssUserRepository.findByIds(memberIds);
+		if (findByIds.isEmpty() || findByIds==null) {
+			return CustomHttpResponse.responseBuilder("Member details not found ", HttpStatus.NOT_FOUND, findByIds );
+		}
 		for (SSUser ssuser : findByIds) {
 			String status = ssuser.getStatus();
 			if (status.equals(Templates.USERSTATUS.OCCUPIED.name())) {
-				return CustomHttpResponse.responseBuilder("Member already occupied , please choose active member..!!", HttpStatus.OK, "Member occupied..!!");
+				return CustomHttpResponse.responseBuilder("Member already occupied , please choose active member..!!", HttpStatus.IM_USED, "Member occupied..!!");
 			}
 			 ssuser.setStatus(Templates.USERSTATUS.OCCUPIED.name());
 			 ssUserRepository.save(ssuser);
 	
 		}
-		return CustomHttpResponse.responseBuilder("Member details", HttpStatus.OK, findByIds );
+		return CustomHttpResponse.responseBuilder("Member details", HttpStatus.OK, findByIds);
 	}
 }

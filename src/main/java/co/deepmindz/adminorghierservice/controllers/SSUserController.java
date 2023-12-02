@@ -24,9 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
-import co.deepmindz.adminorghierservice.dto.UpdateMemberRequestDto;
 import co.deepmindz.adminorghierservice.exception.ResourceAlreadyExist;
-import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.resources.CustomHttpResponse;
 import co.deepmindz.adminorghierservice.service.RolesService;
 import co.deepmindz.adminorghierservice.service.SSUserService;
@@ -43,7 +41,7 @@ public class SSUserController {
 	RolesService rolesService;
 
 	@Autowired
-	RestTemplate restTemplate;	
+	RestTemplate restTemplate;
 
 	@Autowired
 	SSUserService ssUserService;
@@ -160,7 +158,8 @@ public class SSUserController {
 	public ResponseEntity<Object> getTeamMemberByZoneId(@RequestParam String zoneId) {
 		List<MemberResponseDto> teamMemberByZoneId = ssUserService.getTeamMemberByZoneId(zoneId);
 		if (teamMemberByZoneId == null) {
-			return CustomHttpResponse.responseBuilder("No Team member found in this zone..!!", HttpStatus.OK, teamMemberByZoneId);
+			return CustomHttpResponse.responseBuilder("No Team member found in this zone..!!", HttpStatus.OK,
+					teamMemberByZoneId);
 		}
 		return CustomHttpResponse.responseBuilder("All members in this zone..!!", HttpStatus.OK, teamMemberByZoneId);
 	}
@@ -173,7 +172,6 @@ public class SSUserController {
 //		}
 //		 return  teamMemberByZoneId;
 //	}
-
 
 	// return the supervisor of
 	@GetMapping("/get-user-by-zone-id")
@@ -200,16 +198,16 @@ public class SSUserController {
 				ssUserService.getAllSSUsers(userid, false));
 	}
 
+	
 	@GetMapping("/get-user-all-zonedetails")
 	public ResponseEntity<Object> getSSUserZonewithSubZoneDetails(@RequestParam String userid) {
 		return CustomHttpResponse.responseBuilder("SSUser Details : ", HttpStatus.OK,
 				ssUserService.getSSUserZonewithSubZoneDetails(userid));
 	}
-	
 
 	@PostMapping("/update-by-ssuser-ids")
-	public Object updateUserByIds(@RequestBody UpdateMemberRequestDto memberDto) {
-		return ssUserService.updateUserByIds(memberDto.getSsUserId());
+	public Object updateUserByIds(@RequestBody String[] memberDto) {
+		return ssUserService.updateUserByIds(memberDto);
 
 	}
 }

@@ -2,6 +2,7 @@ package co.deepmindz.adminorghierservice.service;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import co.deepmindz.adminorghierservice.dto.ListSSUserSubZonesRequestDto;
@@ -35,5 +36,5 @@ public interface SSUserService {
 	
 	List<MemberResponseDto> getTeamMemberByZoneId(String zoneId);
 
-	Object updateUserByIds(String[] memberDto);
+	ResponseEntity<Object> updateUserByIds(String[] memberDto);
 }
