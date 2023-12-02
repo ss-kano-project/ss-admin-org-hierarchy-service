@@ -43,7 +43,7 @@ public class SSUserController {
 	RolesService rolesService;
 
 	@Autowired
-	RestTemplate restTemplate;
+	RestTemplate restTemplate;	
 
 	@Autowired
 	SSUserService ssUserService;
@@ -174,13 +174,9 @@ public class SSUserController {
 //		 return  teamMemberByZoneId;
 //	}
 
-	@PostMapping("/update-by-ids")
-	public ResponseEntity<Object> updateUserByIds(@RequestBody UpdateMemberRequestDto memberDto) {
-		List<SSUser> updateUserByIds = ssUserService.updateUserByIds(memberDto.getSsUserId());
-		if (updateUserByIds == null) {
-			return CustomHttpResponse.responseBuilder("No SSUser with this id's : ", HttpStatus.OK, "");
-		}
-		return CustomHttpResponse.responseBuilder("Details of SSUser : ", HttpStatus.OK, updateUserByIds);
+	@PostMapping("/update-by-ssuser-ids")
+	public Object updateUserByIds(@RequestBody UpdateMemberRequestDto memberDto) {
+		return ssUserService.updateUserByIds(memberDto.getSsUserId());
 
 	}
 

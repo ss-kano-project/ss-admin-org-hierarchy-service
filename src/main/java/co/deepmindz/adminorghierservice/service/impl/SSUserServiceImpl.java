@@ -154,7 +154,7 @@ public class SSUserServiceImpl implements SSUserService {
 	public List<SSUser> updateUserByIds(String[] memberIds) {
 		List<SSUser> findByIds = ssUserRepository.findByIds(memberIds);
 		if (findByIds.isEmpty() || findByIds == null) {
-			return null;
+			return findByIds;
 		}
 		for (SSUser ssuser : findByIds) {
 			ssuser.setStatus(Templates.USERSTATUS.OCCUPIED.name());

@@ -1,5 +1,9 @@
 package co.deepmindz.adminorghierservice.dto;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +15,8 @@ import lombok.ToString;
 @ToString
 public class UpdateMemberRequestDto {
 	
+	@NotNull
+	@NotEmpty
 	private String[] ssUserId;
 
 }
