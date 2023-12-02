@@ -35,5 +35,5 @@ public interface SSUserService {
 	
 	List<MemberResponseDto> getTeamMemberByZoneId(String zoneId);
 
-	List<SSUser> updateUserByIds(String[] memberDto);
+	Object updateUserByIds(String[] memberDto);
 }

@@ -7,7 +7,10 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
 
 import co.deepmindz.adminorghierservice.dto.ListSSUserZonesResponseDto;
 import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
@@ -18,6 +21,7 @@ import co.deepmindz.adminorghierservice.models.Zones_list;
 import co.deepmindz.adminorghierservice.repository.RolesRepository;
 import co.deepmindz.adminorghierservice.repository.SSUserRepository;
 import co.deepmindz.adminorghierservice.repository.Zones_list_Repo;
+import co.deepmindz.adminorghierservice.resources.CustomHttpResponse;
 import co.deepmindz.adminorghierservice.service.SSUserService;
 import co.deepmindz.adminorghierservice.utils.SSUserUtil;
 import co.deepmindz.adminorghierservice.utils.Templates;
@@ -151,17 +155,17 @@ public class SSUserServiceImpl implements SSUserService {
 	}
 
 	@Override
-	public List<SSUser> updateUserByIds(String[] memberIds) {
+	public ResponseEntity<Object> updateUserByIds(String[] memberIds) {
 		List<SSUser> findByIds = ssUserRepository.findByIds(memberIds);
-		if (findByIds.isEmpty() || findByIds == null) {
-			return findByIds;
-		}
 		for (SSUser ssuser : findByIds) {
-			ssuser.setStatus(Templates.USERSTATUS.OCCUPIED.name());
-			ssUserRepository.save(ssuser);
-
+			String status = ssuser.getStatus();
+			if (status.equals(Templates.USERSTATUS.OCCUPIED.name())) {
+				return CustomHttpResponse.responseBuilder("Member already occupied , please choose active member..!!", HttpStatus.OK, "Member occupied..!!");
+			}
+			 ssuser.setStatus(Templates.USERSTATUS.OCCUPIED.name());
+			 ssUserRepository.save(ssuser);
+	
 		}
-		return findByIds;
-
+		return CustomHttpResponse.responseBuilder("Member details", HttpStatus.OK, findByIds );
 	}
 }

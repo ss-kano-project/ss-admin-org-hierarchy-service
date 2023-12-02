@@ -174,11 +174,6 @@ public class SSUserController {
 //		 return  teamMemberByZoneId;
 //	}
 
-	@PostMapping("/update-by-ssuser-ids")
-	public Object updateUserByIds(@RequestBody UpdateMemberRequestDto memberDto) {
-		return ssUserService.updateUserByIds(memberDto.getSsUserId());
-
-	}
 
 	// return the supervisor of
 	@GetMapping("/get-user-by-zone-id")
@@ -209,5 +204,12 @@ public class SSUserController {
 	public ResponseEntity<Object> getSSUserZonewithSubZoneDetails(@RequestParam String userid) {
 		return CustomHttpResponse.responseBuilder("SSUser Details : ", HttpStatus.OK,
 				ssUserService.getSSUserZonewithSubZoneDetails(userid));
+	}
+	
+
+	@PostMapping("/update-by-ssuser-ids")
+	public Object updateUserByIds(@RequestBody UpdateMemberRequestDto memberDto) {
+		return ssUserService.updateUserByIds(memberDto.getSsUserId());
+
 	}
 }
