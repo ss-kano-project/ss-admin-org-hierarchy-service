@@ -21,7 +21,6 @@ public class AdminOrgHierServiceApplication {
 		SpringApplication.run(AdminOrgHierServiceApplication.class, args);
 	}
 	
-	
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

@@ -42,6 +42,8 @@ public class SSUser {
 	@NotNull
 	@Column(unique = true)
 	private String username;
+	
+	private String phoneNumber;
 
 	private String password;
 

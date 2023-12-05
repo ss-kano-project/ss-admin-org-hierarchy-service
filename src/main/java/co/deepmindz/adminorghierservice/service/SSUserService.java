@@ -36,5 +36,7 @@ public interface SSUserService {
 	
 	List<MemberResponseDto> getTeamMemberByZoneId(String zoneId);
 
-	ResponseEntity<Object> updateUserByIds(String[] memberDto);
+	ResponseEntity<Object> updateUserByIds(String[] ssuserids);
+
+	List<SSUser> allSSUserByIds(List<String> list);
 }

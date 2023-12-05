@@ -1,5 +1,6 @@
 package co.deepmindz.adminorghierservice.controllers;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -198,7 +199,6 @@ public class SSUserController {
 				ssUserService.getAllSSUsers(userid, false));
 	}
 
-	
 	@GetMapping("/get-user-all-zonedetails")
 	public ResponseEntity<Object> getSSUserZonewithSubZoneDetails(@RequestParam String userid) {
 		return CustomHttpResponse.responseBuilder("SSUser Details : ", HttpStatus.OK,
@@ -206,8 +206,14 @@ public class SSUserController {
 	}
 
 	@PostMapping("/update-by-ssuser-ids")
-	public Object updateUserByIds(@RequestBody String[] memberDto) {
-		return ssUserService.updateUserByIds(memberDto);
+	public Object updateUserByIds(@RequestBody String[] ssuserids) {
+		return ssUserService.updateUserByIds(ssuserids);
+
+	}
+
+	@PostMapping("/all-ssuser-by-ids-forRestcall")
+	public Object allSSUserByIds(@RequestBody String[] ssuserids) {
+		return ssUserService.allSSUserByIds(Arrays.asList(ssuserids));
 
 	}
 }

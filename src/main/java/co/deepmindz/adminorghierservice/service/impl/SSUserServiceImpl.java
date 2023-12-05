@@ -171,4 +171,10 @@ public class SSUserServiceImpl implements SSUserService {
 		}
 		return CustomHttpResponse.responseBuilder("Member details", HttpStatus.OK, findByIds);
 	}
+
+	@Override
+	public List<SSUser> allSSUserByIds(List<String> ssuserids) {
+		  return ssUserRepository.findAllById(ssuserids);
+
+	}
 }
