@@ -1,6 +1,5 @@
 package co.deepmindz.adminorghierservice.controllers;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import co.deepmindz.adminorghierservice.dto.ConfigManagementRequestDto;
 import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
@@ -211,9 +213,61 @@ public class SSUserController {
 
 	}
 
-	@PostMapping("/all-ssuser-by-ids-forRestcall")
-	public Object allSSUserByIds(@RequestBody String[] ssuserids) {
-		return ssUserService.allSSUserByIds(Arrays.asList(ssuserids));
+//	@PostMapping("/all-ssuser-by-ids-forRestcall")
+//	public List<SSUser> allSSUserByIds(@RequestBody String[] ssuserids) {
+//		return ssUserService.allSSUserByIds(Arrays.asList(ssuserids));
+//
+//	}
+
+	@PostMapping("/set-configuration")
+	public Object setConfiguration(@Valid @RequestBody ConfigManagementRequestDto dto) {
+		try {
+			String freezeApi = Templates.ALLSERVICES.admin_main.toString()
+					+ "/admin-main/config-management/set-configuration";
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<Object> entity = new HttpEntity<Object>(dto, headers);
+			Object postForObject = restTemplate.postForObject(freezeApi, entity, Object.class);
+			return postForObject;
+		} catch (Exception e) {
+			System.out.println("freezeApi Api not working :");
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@PostMapping("/get-configuration")
+	public Object getConfiguration(@Valid @RequestBody ConfigManagementRequestDto dto) {
+		try {
+			String getConfigurationForfreezeApi = Templates.ALLSERVICES.admin_main.toString()
+					+ "/admin-main/config-management/get-configuration";
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			HttpEntity<Object> entity = new HttpEntity<Object>(dto, headers);
+			return restTemplate.postForObject(getConfigurationForfreezeApi, entity, Object.class);
+
+		} catch (Exception e) {
+			System.out.println("getConfigurationForfreezeApi Api not working :");
+			e.printStackTrace();
+			return restTemplate;
+		}
+	}
+
+	@GetMapping("/get-all-configuration")
+	public Object getAllConfiguration() {
+		logger.info("SSUserController.class:getAllConfiguration: get-all-configuration");
+		try {
+			String getAllFreezeConfigurationApi = Templates.ALLSERVICES.admin_main.toString()
+					+ "/admin-main/config-management/get-all-configuration";
+			return restTemplate.getForObject(getAllFreezeConfigurationApi, Object.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return CustomHttpResponse.responseBuilder("getAllFreezeConfigurationApi  is not working..!!",
+					HttpStatus.NOT_FOUND, null);
+		}
 
 	}
+
 }

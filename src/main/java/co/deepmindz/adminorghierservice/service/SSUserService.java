@@ -38,5 +38,5 @@ public interface SSUserService {
 
 	ResponseEntity<Object> updateUserByIds(String[] ssuserids);
 
-	List<SSUser> allSSUserByIds(List<String> list);
+//	List<SSUser> allSSUserByIds(List<String> list);
 }

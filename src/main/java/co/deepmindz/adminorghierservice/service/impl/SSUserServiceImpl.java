@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.deepmindz.adminorghierservice.dto.ListSSUserZonesResponseDto;
 import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
+import co.deepmindz.adminorghierservice.dto.SSResponseDtoForRestCall;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.models.SSUser;
@@ -172,9 +173,11 @@ public class SSUserServiceImpl implements SSUserService {
 		return CustomHttpResponse.responseBuilder("Member details", HttpStatus.OK, findByIds);
 	}
 
-	@Override
-	public List<SSUser> allSSUserByIds(List<String> ssuserids) {
-		  return ssUserRepository.findAllById(ssuserids);
-
-	}
+//	@Override
+//	public List<SSUser> allSSUserByIds(List<String> ssuserids) {
+//
+//		  List<SSUser> findAllById = ssUserRepository.findAllById(ssuserids);
+//		  List<SSResponseDtoForRestCall> ssResponseDtoForRestCall =  ssUserUtil.mapListOfSSUserToListOfSSResponse(findAllById);
+//
+//	}
 }

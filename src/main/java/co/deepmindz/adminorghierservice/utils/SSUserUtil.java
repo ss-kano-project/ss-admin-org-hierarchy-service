@@ -3,6 +3,7 @@ package co.deepmindz.adminorghierservice.utils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
+import co.deepmindz.adminorghierservice.dto.SSResponseDtoForRestCall;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.models.Roles;
@@ -144,4 +146,12 @@ public class SSUserUtil {
 				allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
 				supervisors.toArray(new String[supervisors.size()]), user.getCreated_at());
 	}
+
+//	public List<SSResponseDtoForRestCall> mapListOfSSUserToListOfSSResponse(List<SSUser> findAllById) {
+//		List<SSResponseDtoForRestCall> ssResponseDtoForRestCallList = new ArrayList<>();
+//		for(SSUser ssuser : findAllById) {
+//			ssResponseDtoForRestCallList.add(ssuser.getUser_id(),ssuser.getName(),ssuser.getPhoneNumber(),ssuser.getUsername(),ssuser.getl)
+//		}
+//		return null;
+//	}
 }
