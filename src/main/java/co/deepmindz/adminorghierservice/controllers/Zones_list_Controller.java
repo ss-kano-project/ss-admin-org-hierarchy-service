@@ -84,7 +84,7 @@ public class Zones_list_Controller {
 		return CustomHttpResponse.responseBuilder("All available Zones", HttpStatus.OK, zones_list_ResponseDtos);
 	}
 
-	@PostMapping("/update-zones/{zoneId}")
+	@PostMapping("/update-zones")
 	public ResponseEntity<Object> updateZone(
 			@RequestBody Zones_list_RequestDto zones_listDto) {
 		Zones_list_ResponseDto updateZone = zones_list_service.updateZone(zones_listDto);
