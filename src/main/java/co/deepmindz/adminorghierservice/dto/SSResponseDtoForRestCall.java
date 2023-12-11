@@ -1,6 +1,6 @@
 package co.deepmindz.adminorghierservice.dto;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

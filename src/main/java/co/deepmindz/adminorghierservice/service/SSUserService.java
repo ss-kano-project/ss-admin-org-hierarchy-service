@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import co.deepmindz.adminorghierservice.dto.ListSSUserSubZonesRequestDto;
 import co.deepmindz.adminorghierservice.dto.ListSSUserZonesResponseDto;
 import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
+import co.deepmindz.adminorghierservice.dto.SSResponseDtoForRestCall;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.dto.UpdateMemberRequestDto;
@@ -38,5 +39,5 @@ public interface SSUserService {
 
 	ResponseEntity<Object> updateUserByIds(String[] ssuserids);
 
-//	List<SSUser> allSSUserByIds(List<String> list);
+	List<SSResponseDtoForRestCall> allSSUserByIds(List<String> list);
 }

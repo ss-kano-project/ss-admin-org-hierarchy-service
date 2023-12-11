@@ -84,11 +84,14 @@ public class Zones_list_Controller {
 		return CustomHttpResponse.responseBuilder("All available Zones", HttpStatus.OK, zones_list_ResponseDtos);
 	}
 
-	@PostMapping("/zones/{zoneId}")
-	public ResponseEntity<Object> updateZone(@PathVariable String zoneId,
+	@PostMapping("/update-zones/{zoneId}")
+	public ResponseEntity<Object> updateZone(
 			@RequestBody Zones_list_RequestDto zones_listDto) {
-		Zones_list_ResponseDto updateZone = zones_list_service.updateZone(zoneId, zones_listDto);
-		return CustomHttpResponse.responseBuilder("Zone_list Succesfully Updated", HttpStatus.OK, updateZone);
+		Zones_list_ResponseDto updateZone = zones_list_service.updateZone(zones_listDto);
+		if (updateZone==null) {
+			return CustomHttpResponse.responseBuilder("Zone data not found with the given id : "+zones_listDto.getId() , HttpStatus.BAD_REQUEST, updateZone);
+		}
+		return CustomHttpResponse.responseBuilder("Zone_list ", HttpStatus.OK, updateZone);
 	}
 
 	@DeleteMapping("/zones/{zoneId}")
