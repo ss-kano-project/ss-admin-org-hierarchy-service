@@ -87,8 +87,8 @@ public class RolesController {
 	@GetMapping("/all-organization-relationships")
 	public ResponseEntity<Object> getRelationShip() {
 		logger.info("RolesController.class:getRelationShip():all-organization-relationships");
-		List<RolesResponseDto> allmanagers = rolesService.getAllRoles();
-		List<ZonesResponseDto> allZones = zoneService.getAllZones("");
+		List<RolesResponseDto> allmanagers = rolesService.getRolesHierarchy();
+		List<ZonesResponseDto> allZones = zoneService.getZonesHierarchy();
 
 		if (allmanagers.isEmpty() || allmanagers == null) {
 			logger.error("RolesController.class:getRelationShip():all-organization-relationships", "Roles Not Found");
@@ -102,7 +102,8 @@ public class RolesController {
 		HashMap<String, RolesResponseDto> idWithManagerObjectMap = new HashMap<>();
 		List<CustomDataTypes.relation> organizationRelation = new ArrayList<>();
 		if (loginmode == null) {
-			RequestEntity<Void> request = RequestEntity.get(services[0] + "/admin-main/login-mode/current-loginMode-status")
+			RequestEntity<Void> request = RequestEntity
+					.get(services[0] + "/admin-main/login-mode/current-loginMode-status")
 					.accept(MediaType.APPLICATION_JSON).build();
 			loginmode = restTemplate.exchange(request, responseType).getBody();
 		}
@@ -125,13 +126,11 @@ public class RolesController {
 
 			organizationRelation.add(new CustomDataTypes.relation(zone.getName(), zone.getZone_id(),
 					idWithRolesMap.get(zone.getZone_id()).getTitle(),
-					idWithRolesMap.get(zone.getZone_id()).getRole_id(),
-					reportsTo));
+					idWithRolesMap.get(zone.getZone_id()).getRole_id(), reportsTo));
 		}
 
 		logger.info("RolesController.class:getRelationShip():all-organization-relationships", organizationRelation);
-		return CustomHttpResponse.responseBuilder("Organizational Relation :", 
-				HttpStatus.OK, organizationRelation);
+		return CustomHttpResponse.responseBuilder("Organizational Relation :", HttpStatus.OK, organizationRelation);
 	}
 
 	@DeleteMapping("/role/clean-roles")
