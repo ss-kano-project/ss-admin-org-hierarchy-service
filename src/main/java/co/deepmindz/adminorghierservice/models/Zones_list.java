@@ -12,13 +12,25 @@ import lombok.*;
 
 @Setter
 @Getter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Entity(name = "Zones_list")
 public class Zones_list {
 
-    @Id
+    
+    
+	public Zones_list(String _id, @NotNull String name, String linked_zone_list, String code, String belongs_to_zone) {
+		super();
+		this._id = _id;
+		this.name = name;
+		this.linked_zone_list = linked_zone_list;
+		this.code = code;
+		this.belongs_to_zone = belongs_to_zone;
+	}
+
+
+	@Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String _id;
     @NotNull

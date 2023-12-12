@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
+import co.deepmindz.adminorghierservice.dto.SSResponseDtoForRestCall;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.models.Roles;
@@ -17,6 +19,7 @@ import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.repository.RolesRepository;
 import co.deepmindz.adminorghierservice.repository.SSUserRepository;
 import co.deepmindz.adminorghierservice.utils.CustomDataTypes.SupervisorOfSSUSer;
+import lombok.val;
 
 @Service
 public class SSUserUtil {
@@ -26,7 +29,7 @@ public class SSUserUtil {
 
 	@Autowired
 	RolesRepository rolesRepository;
-	
+
 	@Autowired
 	SSUserRepository ssUserRepository;
 
@@ -46,6 +49,7 @@ public class SSUserUtil {
 		}
 		ssUser.setLinkedParentZones(linkedParentZones.toArray(new String[linkedParentZones.size()]));
 		ssUser.setLinkedZone(immediateLinkedZone);
+		ssUser.setStatus(Templates.USERSTATUS.ACTIVE.name());
 		if (loginmode.equals("Two_FA")) {
 			ssUser.setUsername(ssUserDto.getPhoneNumber());
 		} else {
@@ -70,22 +74,51 @@ public class SSUserUtil {
 		for (String zone : user.getLinkedParentZones()) {
 			allLinkedZoneNames.add(zone.split(":")[0]);
 		}
-//		Collections.reverse(allLinkedZoneNames);
-		
+		Collections.reverse(allLinkedZoneNames);
+
 		List<SSUser> supervisors = ssUserRepository.findAllById(List.of(user.getLinkedSupervisors()));
 		Map<String, String> idWithSSUserNameMap = new HashMap<>();
 		for (SSUser user2 : supervisors)
-			idWithSSUserNameMap.put(user2.getUser_id(), user2.getName());
-		
+			idWithSSUserNameMap.put(user2.getUser_id(), user2.getUsername());
+
+		List<String> supervisorslist = new ArrayList<>();
+		for (String supervisor : user.getLinkedSupervisors()) {
+			supervisorslist.add(idWithSSUserNameMap.get(supervisor));
+			supervisorslist.add(supervisor);
+		}
+
+		return new SSUserResponseDto(user.getUser_id(), user.getName(), idWithRoleNameMap.get(user.getRole_id()),
+				user.getUsername(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
+				supervisorslist.toArray(new String[supervisorslist.size()]), user.getCreated_at());
+	}
+
+	public MemberResponseDto mapEntityToMemberResponseDto(SSUser user) {
+		List<Roles> allRoles = rolesRepository.findAll();
+		Map<String, String> idWithRoleNameMap = new HashMap<>();
+		for (Roles roles : allRoles)
+			idWithRoleNameMap.put(roles.getRole_id(), roles.getTitle());
+
+		List<String> allLinkedZoneNames = new ArrayList<>();
+		for (String zone : user.getLinkedParentZones()) {
+			allLinkedZoneNames.add(zone.split(":")[0]);
+		}
+//		Collections.reverse(allLinkedZoneNames);
+
+		List<SSUser> supervisors = ssUserRepository.findAllById(List.of(user.getLinkedSupervisors()));
+		Map<String, String> idWithSSUserNameMap = new HashMap<>();
+		for (SSUser user2 : supervisors)
+			idWithSSUserNameMap.put(user2.getUser_id(), user2.getUsername());
+
 		List<String> supervisorslist = new ArrayList<>();
 		for (String supervisor : user.getLinkedSupervisors()) {
 			supervisorslist.add(idWithSSUserNameMap.get(supervisor));
 //			supervisorslist.add(supervisor);
 		}
-		
-		return new SSUserResponseDto(user.getUser_id(), user.getName(), idWithRoleNameMap.get(user.getRole_id()),
-				user.getUsername(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
-				supervisorslist.toArray(new String[supervisorslist.size()]), user.getCreated_at());
+
+		return new MemberResponseDto(user.getUser_id(), user.getUsername(), idWithRoleNameMap.get(user.getRole_id()),
+				user.getUsername(), user.getStatus(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
+
+				user.getCreated_at());
 	}
 
 	public SSUserResponseDto mapEntityToResponseDtoForAllSSUser(SSUser user, Map<String, String> idWithSSUserNameMap) {
@@ -104,11 +137,28 @@ public class SSUserUtil {
 		List<String> supervisors = new ArrayList<>();
 		for (String supervisor : user.getLinkedSupervisors()) {
 			supervisors.add(idWithSSUserNameMap.get(supervisor));
-//			supervisors.add(supervisor);
+			supervisors.add(supervisor);
 		}
 
 		return new SSUserResponseDto(user.getUser_id(), user.getName(), idWithRoleNameMap.get(user.getRole_id()),
 				user.getUsername(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
 				supervisors.toArray(new String[supervisors.size()]), user.getCreated_at());
+	}
+
+	public List<SSResponseDtoForRestCall> mapListOfSSUserToListOfSSResponse(List<SSUser> findAllById) {
+		List<SSResponseDtoForRestCall> ssResponseDtoForRestCallList = new ArrayList<>();
+		SSResponseDtoForRestCall ssResponseDtoForRestCall = new SSResponseDtoForRestCall();
+		for (SSUser ssuser : findAllById) {
+			ssResponseDtoForRestCall.setMember_id(ssuser.getUser_id());
+			ssResponseDtoForRestCall.setMember_name(ssuser.getName());
+			ssResponseDtoForRestCall.setPhone_number(ssuser.getPhoneNumber());
+			ssResponseDtoForRestCall.setUser_name(ssuser.getUsername());
+			ssResponseDtoForRestCall.setDesignation(ssuser.getRole_id());
+			ssResponseDtoForRestCall.setLinkedZones(ssuser.getLinkedZone());
+			ssResponseDtoForRestCall.setStatus(ssuser.getStatus());
+			ssResponseDtoForRestCall.setCreated_at(ssuser.getCreated_at());
+			ssResponseDtoForRestCallList.add(ssResponseDtoForRestCall);
+		}
+		return ssResponseDtoForRestCallList;
 	}
 }

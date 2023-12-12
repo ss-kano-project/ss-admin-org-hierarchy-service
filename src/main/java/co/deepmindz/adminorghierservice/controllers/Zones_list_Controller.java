@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.deepmindz.adminorghierservice.dto.AllZonesByRelationshipIdDTO;
 import co.deepmindz.adminorghierservice.dto.CreateZoneListDTO;
 import co.deepmindz.adminorghierservice.dto.CustomHttpResponse;
+import co.deepmindz.adminorghierservice.dto.ParentZoneDTO;
 import co.deepmindz.adminorghierservice.dto.ZoneListFiltrationDTO;
 import co.deepmindz.adminorghierservice.dto.ZoneListFiltrationResponseDTO;
 import co.deepmindz.adminorghierservice.dto.Zones_list_RequestDto;
@@ -83,11 +84,14 @@ public class Zones_list_Controller {
 		return CustomHttpResponse.responseBuilder("All available Zones", HttpStatus.OK, zones_list_ResponseDtos);
 	}
 
-	@PostMapping("/zones/{zoneId}")
-	public ResponseEntity<Object> updateZone(@PathVariable String zoneId,
+	@PostMapping("/update-zones")
+	public ResponseEntity<Object> updateZone(
 			@RequestBody Zones_list_RequestDto zones_listDto) {
-		Zones_list_ResponseDto updateZone = zones_list_service.updateZone(zoneId, zones_listDto);
-		return CustomHttpResponse.responseBuilder("Zone_list Succesfully Updated", HttpStatus.OK, updateZone);
+		Zones_list_ResponseDto updateZone = zones_list_service.updateZone(zones_listDto);
+		if (updateZone==null) {
+			return CustomHttpResponse.responseBuilder("Zone data not found with the given id : "+zones_listDto.getId() , HttpStatus.BAD_REQUEST, updateZone);
+		}
+		return CustomHttpResponse.responseBuilder("Zone_list ", HttpStatus.OK, updateZone);
 	}
 
 	@DeleteMapping("/zones/{zoneId}")
@@ -133,15 +137,17 @@ public class Zones_list_Controller {
 			return CustomHttpResponse.responseBuilder("All Available Zones by Relationship Id", HttpStatus.OK,
 					zonelist);
 		else {
-			return CustomHttpResponse.responseBuilder("Zones not available", HttpStatus.NOT_FOUND,
-					zonelist);
+			return CustomHttpResponse.responseBuilder("Zones not available", HttpStatus.NOT_FOUND, zonelist);
 		}
 	}
 
 	@GetMapping("/parent-zone")
 	public ResponseEntity<?> getParentZoneList() {
-		return CustomHttpResponse.responseBuilder("Parent Zone Id", HttpStatus.OK,
-				zoneListService.getParentZoneList().get(0));
+		List<ParentZoneDTO> parentZoneList = zoneListService.getParentZoneList();
+		if (parentZoneList == null || parentZoneList.isEmpty())
+			return CustomHttpResponse.responseBuilder("Parent Zone Id", HttpStatus.OK, parentZoneList);
+
+		return CustomHttpResponse.responseBuilder("Parent Zone Id", HttpStatus.OK, parentZoneList.get(0));
 	}
 
 	@GetMapping("/get-all-zonelist")

@@ -13,6 +13,8 @@ public class Zones_list_RequestDto {
 
 
     //	@NotEmpty(message="Name  can't be null")
+	
+	private String id;
     private String Name;
 
     @NotEmpty(message = "Linked_zone  can't be null")

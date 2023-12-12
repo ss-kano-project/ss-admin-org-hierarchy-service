@@ -11,21 +11,21 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SSUserResponseDto {
-
-	private String id;
+public class MemberResponseDto {
+	
+	private String user_id;
 
 	private String name;
 
 	private String role;
 
 	private String username;
-
-//	private String password;
-
+	
+	private String memberStatus;
+	
 	private String[] linked_zones;
-
-	private String[] linked_supervisors;
 
 	private Timestamp created_at;
 }
+
+
