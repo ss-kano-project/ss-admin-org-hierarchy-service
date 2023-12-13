@@ -56,14 +56,14 @@ public class ZoneServiceImpl implements ZoneService {
 		if (!ZonesId.isEmpty()) {
 			zonesResponseDto.addAll(zonesUtil.mapEntityToResponseDto(List.of(zoneRepo.findById(ZonesId).get())));
 		} else {
-			zonesResponseDto.addAll(zonesUtil.mapEntityToResponseDto(zoneRepo.findAll()));
+			zonesResponseDto.addAll(zonesUtil.mapEntityToResponseDto(zoneRepo.getZonesInHierarchy()));
 		}
 		return zonesResponseDto;
 	}
 
 	@Override
 	public ZonesResponseDto zoneById(String zoneId) {
-		 Optional<Zones> zones = zoneRepo.findById(zoneId);
+		Optional<Zones> zones = zoneRepo.findById(zoneId);
 		if (zones.isPresent()) {
 			return zonesUtil.mapEntityToResponseDto(zones);
 		}
@@ -73,7 +73,7 @@ public class ZoneServiceImpl implements ZoneService {
 	@Override
 	public ZonesResponseDto updateZone(String id, ZonesResponseDto zonesDto) {
 		Zones zone = new Zones();
-		Zones savedZone =null;
+		Zones savedZone = null;
 		Optional<Zones> zones = zoneRepo.findById(id);
 		if (zones.isPresent()) {
 			zone.setZone_id(zones.get().getZone_id());
@@ -85,7 +85,6 @@ public class ZoneServiceImpl implements ZoneService {
 			return zonesUtil.mapEntityToResponseDto(savedZone);
 		}
 		return null;
-		
 
 	}
 
@@ -93,7 +92,7 @@ public class ZoneServiceImpl implements ZoneService {
 	public ZonesResponseDto deleteZones_list(String zoneId) {
 		ZonesResponseDto zonesResponseDto = null;
 //		zoneRepo.deleteById(zoneId);
-		if (zoneRepo.findById(zoneId)!=null) {
+		if (zoneRepo.findById(zoneId) != null) {
 			zoneRepo.deleteById(zoneId);
 			return zonesResponseDto;
 		}
