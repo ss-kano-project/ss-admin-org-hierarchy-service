@@ -20,7 +20,7 @@ public class RoelsUtil {
 
 	public Roles mapRequestDtoToEntity(RolesRequestDto dto) {
 		Roles newManager = new Roles();
-		newManager.setTitle(dto.getTitle());
+		newManager.setTitle(dto.getTitle().toUpperCase());
 		newManager.setZone_id(dto.getZone_id());
 		newManager.setSupervisorRole_id(dto.getSupervisorRole_id());
 		newManager.setRole_code(dto.getRole_code());
