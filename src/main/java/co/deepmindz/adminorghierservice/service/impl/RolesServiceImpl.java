@@ -58,6 +58,9 @@ public class RolesServiceImpl implements RolesService {
 		String embededManagerWithSupervisor;
 		List<RolesResponseDto> finalManagers = new ArrayList<>();
 		embededManagerWithSupervisor = rolesRepository.getManagerWithSupervisorDetails(roleID);
+		if (embededManagerWithSupervisor==null) {
+			return finalManagers;
+		}
 		managerWithSupervisor = rolesUtil.generateManagerWithSupervisor(embededManagerWithSupervisor);
 		finalManagers.addAll(rolesUtil.mapEntityToResposeDto(managerWithSupervisor, roleID, false));
 

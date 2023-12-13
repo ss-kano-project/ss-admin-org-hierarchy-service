@@ -85,11 +85,17 @@ public class Zones_list_Controller {
 	}
 
 	@PostMapping("/update-zones")
-	public ResponseEntity<Object> updateZone(
-			@RequestBody Zones_list_RequestDto zones_listDto) {
+	public ResponseEntity<Object> updateZone(@RequestBody Zones_list_RequestDto zones_listDto) {
 		Zones_list_ResponseDto updateZone = zones_list_service.updateZone(zones_listDto);
-		if (updateZone==null) {
-			return CustomHttpResponse.responseBuilder("Zone data not found with the given id : "+zones_listDto.getId() , HttpStatus.BAD_REQUEST, updateZone);
+		if (updateZone == null) {
+			return CustomHttpResponse.responseBuilder(
+					"Zone data not found with the given id : " + zones_listDto.getId(), HttpStatus.BAD_REQUEST,
+					updateZone);
+		}
+		if (updateZone.getName().contains("already found")) {
+			return CustomHttpResponse.responseBuilder(
+					"Zone already found please enter unique zone " , HttpStatus.ALREADY_REPORTED,
+					"");
 		}
 		return CustomHttpResponse.responseBuilder("Zone_list ", HttpStatus.OK, updateZone);
 	}
