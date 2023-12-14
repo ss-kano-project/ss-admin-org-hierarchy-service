@@ -37,13 +37,14 @@ public class SSUserUtil {
 
 		String immediateLinkedZone = null;
 		SSUser ssUser = new SSUser();
-		ssUser.setName(ssUserDto.getName());
+		ssUser.setName(ssUserDto.getUserName());
 		ssUser.setRole_id(ssUserDto.getRole());
 		List<String> linkedParentZones = new ArrayList<>();
 		for (int i = 0; i < ssUserDto.getLinked_zones().length; i++) {
 			if (i == ssUserDto.getLinked_zones().length - 1) {
 				immediateLinkedZone = ssUserDto.getLinked_zones()[i].getZone_id();
 			}
+			
 			linkedParentZones
 					.add(ssUserDto.getLinked_zones()[i].getZone() + ":" + ssUserDto.getLinked_zones()[i].getZone_id());
 		}

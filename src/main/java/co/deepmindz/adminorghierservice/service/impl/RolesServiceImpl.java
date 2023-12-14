@@ -39,6 +39,7 @@ public class RolesServiceImpl implements RolesService {
 		return rolesUtil.mapEntityToResposeDto(List.of(manager), manager.getRole_id(), true).get(0);
 	}
 
+	
 	public List<RolesResponseDto> getRoles() {
 		List<Roles> managerWithSupervisor;
 		String embededManagerWithSupervisor;
