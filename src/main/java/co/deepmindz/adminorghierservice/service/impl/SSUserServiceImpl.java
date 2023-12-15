@@ -173,11 +173,11 @@ public class SSUserServiceImpl implements SSUserService {
 		return CustomHttpResponse.responseBuilder("Member details", HttpStatus.OK, findByIds);
 	}
 
-//	@Override
-//	public List<SSUser> allSSUserByIds(List<String> ssuserids) {
-//
-//		  List<SSUser> findAllById = ssUserRepository.findAllById(ssuserids);
-//		  List<SSResponseDtoForRestCall> ssResponseDtoForRestCall =  ssUserUtil.mapListOfSSUserToListOfSSResponse(findAllById);
-//
-//	}
+	@Override
+	public List<SSResponseDtoForRestCall> allSSUserByIds(List<String> ssuserids) {
+
+		  List<SSUser> findAllById = ssUserRepository.findAllById(ssuserids);
+		    return ssUserUtil.mapListOfSSUserToListOfSSResponse(findAllById);
+
+	}
 }

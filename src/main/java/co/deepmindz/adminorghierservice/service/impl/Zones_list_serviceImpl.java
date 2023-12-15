@@ -1,16 +1,15 @@
 package co.deepmindz.adminorghierservice.service.impl;
 
-import co.deepmindz.adminorghierservice.dto.CreateZoneListDTO;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.deepmindz.adminorghierservice.dto.CreateZoneListDTO;
 import co.deepmindz.adminorghierservice.dto.Zones_list_RequestDto;
 import co.deepmindz.adminorghierservice.dto.Zones_list_ResponseDto;
 import co.deepmindz.adminorghierservice.dto.Zones_list_with_parentZone_response;
@@ -25,26 +24,27 @@ import co.deepmindz.adminorghierservice.utils.Zones_list_util;
 @Service
 public class Zones_list_serviceImpl implements Zones_list_service {
 
-    @Autowired
-    private ZoneRepo zoneRepo;
+	@Autowired
+	private ZoneRepo zoneRepo;
 
-    @Autowired
-    private Zones_list_Repo zones_list_Repo;
+	@Autowired
+	private Zones_list_Repo zones_list_Repo;
 
-    @Autowired
-    private Zones_list_util zones_list_util;
+	@Autowired
+	private Zones_list_util zones_list_util;
 
-    @Override
-    public List<Zones_list_ResponseDto> getAllZonesList() {
-        List<Zones_list> AllZonesList = zones_list_Repo.findAll();
-        return zones_list_util.mapEntityToResponseDto(AllZonesList);
-    }
+	@Override
+	public List<Zones_list_ResponseDto> getAllZonesList() {
+		List<Zones_list> AllZonesList = zones_list_Repo.findAll();
+		return zones_list_util.mapEntityToResponseDto(AllZonesList);
+	}
 
 	@Override
 	public CreateZoneListDTO createZones(CreateZoneListDTO zoneDto) {
 		Zones elementFound = zoneRepo.findById(zoneDto.getBelongs_to()).get();
 		if (!elementFound.getZone_id().isEmpty()) {
-			Zones_list zoneList = new Zones_list();			zoneList.setLinked_zone_list(zoneDto.getZone_listing_id());
+			Zones_list zoneList = new Zones_list();
+			zoneList.setLinked_zone_list(zoneDto.getZone_listing_id());
 			zoneList.setBelongs_to_zone(zoneDto.getBelongs_to());
 			zoneList.setCode(zoneDto.getCode());
 			zoneList.setName(zoneDto.getName().toUpperCase());
@@ -56,75 +56,78 @@ public class Zones_list_serviceImpl implements Zones_list_service {
 		}
 	}
 
-    @Override
-    public Zones_list_ResponseDto listZoneById(String zoneId) {
-        Optional<Zones_list> findById = zones_list_Repo.findById(zoneId);
-        if (findById.isPresent()) {
-        return zones_list_util.mapEntityToResponseDto(findById);
-        }
-			return null;
-		
-    }
-
-    @Override
-    public Zones_list_ResponseDto deleteZones(String zoneId) {
-        Zones_list_ResponseDto zones_list_ResponseDto = null;
-        zones_list_Repo.deleteById(zoneId);
-        return zones_list_ResponseDto;
-    }
 	@Override
-	public Zones_list_ResponseDto updateZone(String zoneId, Zones_list_RequestDto zones_listDto) {
-		Zones_list zones_list = zones_list_Repo.findById(zoneId).get();
-		Zones_list z_list = new Zones_list();
-		z_list.set_id(zones_list.get_id());
-		if (zones_listDto.getName() == null) {
-			z_list.setName(zones_list.getName().toUpperCase());
-			z_list.setCode(zones_listDto.getCode());
-			z_list.setLinked_zone_list(zones_list.getLinked_zone_list());
-			zones_list_Repo.save(z_list);
-
-		} else if (zones_listDto.getCode() == null) {
-			z_list.setCode(zones_list.getCode());
-			z_list.setName(zones_listDto.getName().toUpperCase());
-			z_list.setLinked_zone_list(zones_list.getLinked_zone_list());
-			zones_list_Repo.save(z_list);
-		} else {
-			z_list.setName(zones_listDto.getName().toUpperCase());
-			z_list.setLinked_zone_list(zones_list.getLinked_zone_list());
-			z_list.setCode(zones_listDto.getCode());
-			zones_list_Repo.save(z_list);
+	public Zones_list_ResponseDto listZoneById(String zoneId) {
+		Optional<Zones_list> findById = zones_list_Repo.findById(zoneId);
+		if (findById.isPresent()) {
+			return zones_list_util.mapEntityToResponseDto(findById);
 		}
+		return null;
+
+	}
+
+	@Override
+	public Zones_list_ResponseDto deleteZones(String zoneId) {
+		Zones_list_ResponseDto zones_list_ResponseDto = null;
+		zones_list_Repo.deleteById(zoneId);
+		return zones_list_ResponseDto;
+	}
+
+	@Override
+	public Zones_list_ResponseDto updateZone(Zones_list_RequestDto zones_listDto) {
+		Optional<Zones_list> zones_list = zones_list_Repo.findById(zones_listDto.getId());
+		List<Zones_list> findAll = zones_list_Repo.findAll();
+		if (zones_list.isEmpty() || zones_list == null) {
+			return null;
+		}
+		
+		Zones_list z_list = new Zones_list();
+		
+//		if (zones_listDto.getName().contentEquals(findAll.size()))) {
+//			 z_list.setName("zone name already found..!!");
+////			 z_list.se
+//			 return zones_list_util.mapEntityToResponseDto(z_list);
+////			return "";
+//		}
+		
+	
+		z_list.set_id(zones_list.get().get_id());
+		z_list.setName(zones_listDto.getName().toUpperCase());
+		z_list.setBelongs_to_zone(zones_list.get().getBelongs_to_zone());
+		z_list.setLinked_zone_list(zones_list.get().getLinked_zone_list());
+		z_list.setCode(zones_list.get().getCode());
+		zones_list_Repo.save(z_list);
 		return zones_list_util.mapEntityToResponseDto(z_list);
-    }
+	}
 
-    @Override
-    public void cleanAllZone_list() {
-        zones_list_Repo.deleteAll();
+	@Override
+	public void cleanAllZone_list() {
+		zones_list_Repo.deleteAll();
 
-    }
+	}
 
-    @Override
-    public List<Zones_list_with_parentZone_response> getAllZonesByRelationshipId(String linked_zone) {
-        List<Zones_list_with_parentZone_response> mapListEntityToListResponseDto = null;
-        try {
-            List<Zones_list> allZonesByRelationshipId = zones_list_Repo.getAllZonesByRelationshipId(linked_zone);
-            Optional<Zones> zones = zoneRepo.findById(linked_zone);
-            String parentZonename = zones.get().getName();
-            System.out.println("name :" + parentZonename);
-            if (!allZonesByRelationshipId.isEmpty() && allZonesByRelationshipId != null) {
+	@Override
+	public List<Zones_list_with_parentZone_response> getAllZonesByRelationshipId(String linked_zone) {
+		List<Zones_list_with_parentZone_response> mapListEntityToListResponseDto = null;
+		try {
+			List<Zones_list> allZonesByRelationshipId = zones_list_Repo.getAllZonesByRelationshipId(linked_zone);
+			Optional<Zones> zones = zoneRepo.findById(linked_zone);
+			String parentZonename = zones.get().getName();
+			System.out.println("name :" + parentZonename);
+			if (!allZonesByRelationshipId.isEmpty() && allZonesByRelationshipId != null) {
 
-                mapListEntityToListResponseDto = zones_list_util
-                        .mapListEntityToParentListResponseDto(allZonesByRelationshipId, parentZonename);
+				mapListEntityToListResponseDto = zones_list_util
+						.mapListEntityToParentListResponseDto(allZonesByRelationshipId, parentZonename);
 
-            } else {
-                throw new ResourceNotFoundException(linked_zone, linked_zone, "not found");
-            }
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("linked_zone", linked_zone, "not found");
-        }
-        return mapListEntityToListResponseDto;
+			} else {
+				throw new ResourceNotFoundException(linked_zone, linked_zone, "not found");
+			}
+		} catch (Exception e) {
+			throw new ResourceNotFoundException("linked_zone", linked_zone, "not found");
+		}
+		return mapListEntityToListResponseDto;
 
-    }
+	}
 
 	@Override
 	public JSONObject getAllZoneListByRelationshipId(String linked_zone, String getParent_zone_list_id) {

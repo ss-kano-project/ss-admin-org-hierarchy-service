@@ -23,7 +23,7 @@ public interface Zones_list_service {
 
     Zones_list_ResponseDto deleteZones(String zoneId);
 
-    Zones_list_ResponseDto updateZone(String zoneId, Zones_list_RequestDto zones_listDto);
+    Zones_list_ResponseDto updateZone(Zones_list_RequestDto zones_listDto);
 
     public void cleanAllZone_list();
 

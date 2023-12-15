@@ -1,5 +1,6 @@
 package co.deepmindz.adminorghierservice.controllers;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +26,11 @@ import org.springframework.web.client.RestTemplate;
 
 import co.deepmindz.adminorghierservice.dto.ConfigManagementRequestDto;
 import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
+import co.deepmindz.adminorghierservice.dto.SSResponseDtoForRestCall;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.exception.ResourceAlreadyExist;
+import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.resources.CustomHttpResponse;
 import co.deepmindz.adminorghierservice.service.RolesService;
 import co.deepmindz.adminorghierservice.service.SSUserService;
@@ -185,7 +188,7 @@ public class SSUserController {
 
 	@GetMapping("/get-ssuser-byusername")
 	public ResponseEntity<Object> getSSUserDetailsForExternalService(@RequestParam String username) {
-		return CustomHttpResponse.responseBuilder("Details of SSUser : ", HttpStatus.OK,
+		return CustomHttpResponse.responseBuilder("Details of SSUser  ", HttpStatus.OK,
 				ssUserService.getAllSSUsers(username, true));
 	}
 
@@ -197,7 +200,7 @@ public class SSUserController {
 
 	@GetMapping("/get-ssuser-byuserid")
 	public ResponseEntity<Object> getUserDetailsByUserId(@RequestParam String userid) {
-		return CustomHttpResponse.responseBuilder("SSUser Details : ", HttpStatus.OK,
+		return CustomHttpResponse.responseBuilder("SSUser Details ", HttpStatus.OK,
 				ssUserService.getAllSSUsers(userid, false));
 	}
 
@@ -213,11 +216,11 @@ public class SSUserController {
 
 	}
 
-//	@PostMapping("/all-ssuser-by-ids-forRestcall")
-//	public List<SSUser> allSSUserByIds(@RequestBody String[] ssuserids) {
-//		return ssUserService.allSSUserByIds(Arrays.asList(ssuserids));
-//
-//	}
+	@PostMapping("/all-ssuser-by-ids-forRestcall")
+	public List<SSResponseDtoForRestCall> allSSUserByIds(@RequestBody String[] ssuserids) {
+		return ssUserService.allSSUserByIds(Arrays.asList(ssuserids));
+
+	}
 
 	@PostMapping("/set-configuration")
 	public Object setConfiguration(@Valid @RequestBody ConfigManagementRequestDto dto) {
@@ -231,7 +234,7 @@ public class SSUserController {
 			Object postForObject = restTemplate.postForObject(freezeApi, entity, Object.class);
 			return postForObject;
 		} catch (Exception e) {
-			System.out.println("freezeApi Api not working :");
+			System.out.println("freezeApi Api not working..!!");
 			e.printStackTrace();
 			return null;
 		}
@@ -249,7 +252,7 @@ public class SSUserController {
 			return restTemplate.postForObject(getConfigurationForfreezeApi, entity, Object.class);
 
 		} catch (Exception e) {
-			System.out.println("getConfigurationForfreezeApi Api not working :");
+			System.out.println("getConfigurationForfreezeApi Api not working ");
 			e.printStackTrace();
 			return restTemplate;
 		}
