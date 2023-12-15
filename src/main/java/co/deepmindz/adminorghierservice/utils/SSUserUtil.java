@@ -54,7 +54,7 @@ public class SSUserUtil {
 		if (loginmode.equals("Two_FA")) {
 			ssUser.setUsername(ssUserDto.getPhoneNumber());
 		} else {
-			ssUser.setUsername(ssUserDto.getUser());
+			ssUser.setUsername(ssUserDto.getUserName());
 			ssUser.setPassword(passwordEncoder.encode(ssUserDto.getPassword()));
 		}
 

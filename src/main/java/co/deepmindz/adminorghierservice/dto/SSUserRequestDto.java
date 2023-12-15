@@ -27,7 +27,7 @@ public class SSUserRequestDto {
 	@NotNull
 	private String phoneNumber; 
 
-	private String user;
+//	private String user;
 
 	private String password;
 
