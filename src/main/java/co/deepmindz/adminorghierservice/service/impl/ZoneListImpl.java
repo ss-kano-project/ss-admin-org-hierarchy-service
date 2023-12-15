@@ -54,7 +54,7 @@ public class ZoneListImpl implements ZoneListService {
 		ZonesResponseDto zone = getZoneById(zoneId);
 		if (zone != null) {
 			zones.add(zone);
-			if (zone.getParentZone_id() != null) {
+			if (zone.getParentZone_id() != null && !zone.getParentZone_id().isEmpty()) {
 				zones.addAll(getZoneAndParents(zone.getParentZone_id()));
 			}
 		}
