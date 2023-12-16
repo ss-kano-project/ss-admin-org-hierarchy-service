@@ -147,8 +147,8 @@ public class SSUserUtil {
 
 	public List<SSResponseDtoForRestCall> mapListOfSSUserToListOfSSResponse(List<SSUser> findAllById) {
 		List<SSResponseDtoForRestCall> ssResponseDtoForRestCallList = new ArrayList<>();
-		SSResponseDtoForRestCall ssResponseDtoForRestCall = new SSResponseDtoForRestCall();
 		for (SSUser ssuser : findAllById) {
+			SSResponseDtoForRestCall ssResponseDtoForRestCall = new SSResponseDtoForRestCall();
 			ssResponseDtoForRestCall.setMember_id(ssuser.getUser_id());
 			ssResponseDtoForRestCall.setMember_name(ssuser.getName());
 			ssResponseDtoForRestCall.setPhone_number(ssuser.getPhoneNumber());

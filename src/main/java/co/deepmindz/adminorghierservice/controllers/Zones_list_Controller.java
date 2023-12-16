@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.deepmindz.adminorghierservice.dto.AllZonesByRelationshipIdDTO;
@@ -40,7 +41,7 @@ public class Zones_list_Controller {
 
 	@GetMapping("/get-all-zones")
 	public ResponseEntity<Object> getAllZonesList() {
-		List<Zones_list_ResponseDto> zones_list_ResponseDtos = zones_list_service.getAllZonesList();
+		List<Zones_list_ResponseDto> zones_list_ResponseDtos = zones_list_service.getAllZonesList(null);
 		return CustomHttpResponse.responseBuilder("All available Zones", HttpStatus.OK, zones_list_ResponseDtos);
 
 	}
@@ -85,11 +86,12 @@ public class Zones_list_Controller {
 	}
 
 	@PostMapping("/update-zones")
-	public ResponseEntity<Object> updateZone(
-			@RequestBody Zones_list_RequestDto zones_listDto) {
+	public ResponseEntity<Object> updateZone(@RequestBody Zones_list_RequestDto zones_listDto) {
 		Zones_list_ResponseDto updateZone = zones_list_service.updateZone(zones_listDto);
-		if (updateZone==null) {
-			return CustomHttpResponse.responseBuilder("Zone data not found with the given id : "+zones_listDto.getId() , HttpStatus.BAD_REQUEST, updateZone);
+		if (updateZone == null) {
+			return CustomHttpResponse.responseBuilder(
+					"Zone data not found with the given id : " + zones_listDto.getId(), HttpStatus.BAD_REQUEST,
+					updateZone);
 		}
 		return CustomHttpResponse.responseBuilder("Zone_list ", HttpStatus.OK, updateZone);
 	}
@@ -151,8 +153,8 @@ public class Zones_list_Controller {
 	}
 
 	@GetMapping("/get-all-zonelist")
-	public List<Zones_list_ResponseDto> getAllZonesListForOtherServices() {
-		List<Zones_list_ResponseDto> zones_list_ResponseDtos = zones_list_service.getAllZonesList();
+	public List<Zones_list_ResponseDto> getAllZonesListForOtherServices(@RequestBody String[] zoneIds) {
+		List<Zones_list_ResponseDto> zones_list_ResponseDtos = zones_list_service.getAllZonesList(zoneIds);
 		return zones_list_ResponseDtos;
 
 	}
