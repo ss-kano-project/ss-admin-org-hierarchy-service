@@ -42,7 +42,7 @@ public class Zones_list_util {
 		List<Zones_list_ResponseDto> listOfDto = new ArrayList<>();
 		for (Zones_list zone : zones) {
 			listOfDto.add(new Zones_list_ResponseDto(zone.get_id(), zone.getName(), zone.getLinked_zone_list(),
-					zone.getCode()));
+					zone.getCode(), zone.getBelongs_to_zone()));
 		}
 		return listOfDto;
 	}
@@ -81,7 +81,7 @@ public class Zones_list_util {
 		List<Zones_list_ResponseDto> listOfDto = new ArrayList<>();
 		for (Zones_list zone : zones) {
 			listOfDto.add(new Zones_list_ResponseDto(zone.get_id(), zone.getName(), zone.getLinked_zone_list(),
-					zone.getCode()));
+					zone.getCode(), zone.getBelongs_to_zone()));
 		}
 		return listOfDto;
 	}
