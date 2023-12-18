@@ -161,7 +161,7 @@ public class SSUserController {
 	 * creation They are not subordinates, they are members from same zone.
 	 */
 	@GetMapping("/members-by-relationship-id")
-	public ResponseEntity<Object> getTeamMemberByZoneId(@RequestParam String zoneId) {
+	public ResponseEntity<Object> getTeamMemberByZoneId(@RequestParam String zoneId ) {
 		List<MemberResponseDto> teamMemberByZoneId = ssUserService.getTeamMemberByZoneId(zoneId);
 		if (teamMemberByZoneId == null) {
 			return CustomHttpResponse.responseBuilder("No Team member found in this zone..!!", HttpStatus.OK,
