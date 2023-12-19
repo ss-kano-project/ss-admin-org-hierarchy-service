@@ -89,20 +89,20 @@ public class RolesController {
 		return CustomHttpResponse.responseBuilder("Role with : " + roleID, HttpStatus.OK, responseDto.get(0));
 	}
 	
-	@GetMapping("/role-by-id-forRestCall/{roleID}")
-	public Object getRoleDetailsForRestCall(@PathVariable String roleID) {
-		logger.info("RolesController.class:getRoleDetailsForRestCall()", roleID);
-		 List<RolesResponseDto> roleObj = rolesService.getRoleDetails(roleID);
-		 Map<String, String> customRoleObjMap = new LinkedHashMap<>();
-		 if (roleObj.isEmpty()) {
-			return roleObj;
+		@GetMapping("/role-by-id-forRestCall/{roleID}")
+		public Object getRoleDetailsForRestCall(@PathVariable String roleID) {
+			logger.info("RolesController.class:getRoleDetailsForRestCall()", roleID);
+			 List<RolesResponseDto> roleObj = rolesService.getRoleDetails(roleID);
+			 Map<String, String> customRoleObjMap = new LinkedHashMap<>();
+			 if (roleObj.isEmpty()) {
+				return roleObj;
+			}
+			 for(RolesResponseDto role : roleObj) {
+				 customRoleObjMap.put("role_id" , role.getRole_id());
+				 customRoleObjMap.put("role", role.getTitle());
+			 }
+			 return customRoleObjMap;
 		}
-		 for(RolesResponseDto role : roleObj) {
-			 customRoleObjMap.put("role_id" , role.getRole_id());
-			 customRoleObjMap.put("role", role.getTitle());
-		 }
-		 return customRoleObjMap;
-	}
 
 	@GetMapping("/role/get-all-roles")
 	public ResponseEntity<Object> getAllManagers() {
