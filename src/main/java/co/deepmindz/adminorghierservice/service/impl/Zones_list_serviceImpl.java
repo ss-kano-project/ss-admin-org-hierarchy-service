@@ -34,9 +34,15 @@ public class Zones_list_serviceImpl implements Zones_list_service {
 	private Zones_list_util zones_list_util;
 
 	@Override
-	public List<Zones_list_ResponseDto> getAllZonesList() {
-		List<Zones_list> AllZonesList = zones_list_Repo.findAll();
-		return zones_list_util.mapEntityToResponseDto(AllZonesList);
+	public List<Zones_list_ResponseDto> getAllZonesList(String[] zoneIds) {
+		List<Zones_list> allZonesList = null;
+		if (zoneIds == null || zoneIds.length <= 0)
+			allZonesList = zones_list_Repo.findAll();
+		else
+			allZonesList = zones_list_Repo.findAllById(List.of(zoneIds));
+		if (allZonesList == null)
+			return null;
+		return zones_list_util.mapEntityToResponseDto(allZonesList);
 	}
 
 	@Override

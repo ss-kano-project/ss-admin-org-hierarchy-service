@@ -15,7 +15,7 @@ import co.deepmindz.adminorghierservice.dto.Zones_list_with_parentZone_response;
 @Service
 public interface Zones_list_service {
 
-    List<Zones_list_ResponseDto> getAllZonesList();
+    List<Zones_list_ResponseDto> getAllZonesList(String[] zoneIds);
 
     CreateZoneListDTO createZones(CreateZoneListDTO zoneDto);
 

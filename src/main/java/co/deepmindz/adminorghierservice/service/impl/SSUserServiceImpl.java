@@ -144,12 +144,11 @@ public class SSUserServiceImpl implements SSUserService {
 
 	@Override
 	public List<MemberResponseDto> getTeamMemberByZoneId(String zoneId) {
-		List<SSUser> teamMemberList = ssUserRepository.getTeamMemberByZoneId(zoneId);
+		List<SSUser> teamMemberList = ssUserRepository.getTeamMemberByZoneId(zoneId );
 		List<MemberResponseDto> response = new ArrayList<>();
 		if (teamMemberList.isEmpty() || teamMemberList == null) {
 			return response;
 		}
-//		List<MemberResponseDto> response = new ArrayList<>();
 		for (SSUser user : teamMemberList)
 			response.add(ssUserUtil.mapEntityToMemberResponseDto(user));
 		return response;
