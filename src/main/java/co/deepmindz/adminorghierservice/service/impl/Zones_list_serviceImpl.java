@@ -82,10 +82,21 @@ public class Zones_list_serviceImpl implements Zones_list_service {
 	@Override
 	public Zones_list_ResponseDto updateZone(Zones_list_RequestDto zones_listDto) {
 		Optional<Zones_list> zones_list = zones_list_Repo.findById(zones_listDto.getId());
+		List<Zones_list> findAll = zones_list_Repo.findAll();
 		if (zones_list.isEmpty() || zones_list == null) {
 			return null;
 		}
+		
 		Zones_list z_list = new Zones_list();
+		
+//		if (zones_listDto.getName().contentEquals(findAll.size()))) {
+//			 z_list.setName("zone name already found..!!");
+////			 z_list.se
+//			 return zones_list_util.mapEntityToResponseDto(z_list);
+////			return "";
+//		}
+		
+	
 		z_list.set_id(zones_list.get().get_id());
 		z_list.setName(zones_listDto.getName().toUpperCase());
 		z_list.setBelongs_to_zone(zones_list.get().getBelongs_to_zone());

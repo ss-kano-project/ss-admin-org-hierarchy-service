@@ -138,7 +138,7 @@ public class SSUserController {
 					throw new ResourceAlreadyExist("Phone Number already registered");
 			}
 		} else if (loginmode.get("data").equals(Templates.LOGINMODES.USER_CREDENTIALS.name())) {
-			List<SSUserResponseDto> foundElement = ssUserService.getAllSSUsers(createSSUserData.getUser(), true);
+			List<SSUserResponseDto> foundElement = ssUserService.getAllSSUsers(createSSUserData.getUserName(), true);
 			if (foundElement != null)
 				throw new ResourceAlreadyExist("User already exists with given user");
 		} else {
@@ -161,7 +161,7 @@ public class SSUserController {
 	 * creation They are not subordinates, they are members from same zone.
 	 */
 	@GetMapping("/members-by-relationship-id")
-	public ResponseEntity<Object> getTeamMemberByZoneId(@RequestParam String zoneId) {
+	public ResponseEntity<Object> getTeamMemberByZoneId(@RequestParam String zoneId ) {
 		List<MemberResponseDto> teamMemberByZoneId = ssUserService.getTeamMemberByZoneId(zoneId);
 		if (teamMemberByZoneId == null) {
 			return CustomHttpResponse.responseBuilder("No Team member found in this zone..!!", HttpStatus.OK,

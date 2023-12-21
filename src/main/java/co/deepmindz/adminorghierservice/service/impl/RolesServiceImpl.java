@@ -39,6 +39,7 @@ public class RolesServiceImpl implements RolesService {
 		return rolesUtil.mapEntityToResposeDto(List.of(manager), manager.getRole_id(), true).get(0);
 	}
 
+	
 	public List<RolesResponseDto> getRoles() {
 		List<Roles> managerWithSupervisor;
 		String embededManagerWithSupervisor;
@@ -58,6 +59,9 @@ public class RolesServiceImpl implements RolesService {
 		String embededManagerWithSupervisor;
 		List<RolesResponseDto> finalManagers = new ArrayList<>();
 		embededManagerWithSupervisor = rolesRepository.getManagerWithSupervisorDetails(roleID);
+		if (embededManagerWithSupervisor==null) {
+			return finalManagers;
+		}
 		managerWithSupervisor = rolesUtil.generateManagerWithSupervisor(embededManagerWithSupervisor);
 		finalManagers.addAll(rolesUtil.mapEntityToResposeDto(managerWithSupervisor, roleID, false));
 

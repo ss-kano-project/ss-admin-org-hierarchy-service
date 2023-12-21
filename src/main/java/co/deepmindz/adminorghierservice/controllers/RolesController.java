@@ -1,14 +1,19 @@
 package co.deepmindz.adminorghierservice.controllers;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +32,7 @@ import co.deepmindz.adminorghierservice.dto.RolesRequestDto;
 import co.deepmindz.adminorghierservice.dto.RolesResponseDto;
 import co.deepmindz.adminorghierservice.dto.ZonesResponseDto;
 import co.deepmindz.adminorghierservice.exception.ResourceNotFoundException;
+import co.deepmindz.adminorghierservice.models.Roles;
 import co.deepmindz.adminorghierservice.resources.CustomHttpResponse;
 import co.deepmindz.adminorghierservice.service.RolesService;
 import co.deepmindz.adminorghierservice.service.ZoneService;
@@ -37,6 +43,7 @@ import jakarta.validation.Valid;
  * author : ram kumar
  */
 
+@PropertySource(ignoreResourceNotFound = true, value = "classpath:app.properties")
 @RestController
 @RequestMapping("/organization")
 public class RolesController {
@@ -55,9 +62,15 @@ public class RolesController {
 
 	private static ParameterizedTypeReference<Map<String, String>> responseType = new ParameterizedTypeReference<>() {
 	};
+	
 
 	@Autowired
 	RestTemplate restTemplate;
+	
+	
+	@Value("${state_limit}")
+	private String state_limit;
+	
 
 	@PostMapping("/role")
 	public ResponseEntity<Object> createRole(@Valid @RequestBody RolesRequestDto managerDto) {
@@ -70,8 +83,26 @@ public class RolesController {
 	public ResponseEntity<Object> getRoleDetails(@PathVariable String roleID) {
 		logger.info("RolesController.class:getManagerDetails():role", roleID);
 		List<RolesResponseDto> responseDto = rolesService.getRoleDetails(roleID);
+		if (responseDto.isEmpty()) {
+			return CustomHttpResponse.responseBuilder("Role not found  with : " + roleID, HttpStatus.NOT_FOUND, " ");
+		}
 		return CustomHttpResponse.responseBuilder("Role with : " + roleID, HttpStatus.OK, responseDto.get(0));
 	}
+	
+		@GetMapping("/role-by-id-forRestCall/{roleID}")
+		public Object getRoleDetailsForRestCall(@PathVariable String roleID) {
+			logger.info("RolesController.class:getRoleDetailsForRestCall()", roleID);
+			 List<RolesResponseDto> roleObj = rolesService.getRoleDetails(roleID);
+			 Map<String, String> customRoleObjMap = new LinkedHashMap<>();
+			 if (roleObj.isEmpty()) {
+				return roleObj;
+			}
+			 for(RolesResponseDto role : roleObj) {
+				 customRoleObjMap.put("role_id" , role.getRole_id());
+				 customRoleObjMap.put("role", role.getTitle());
+			 }
+			 return customRoleObjMap;
+		}
 
 	@GetMapping("/role/get-all-roles")
 	public ResponseEntity<Object> getAllManagers() {

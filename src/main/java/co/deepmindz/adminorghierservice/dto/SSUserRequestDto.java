@@ -17,15 +17,17 @@ public class SSUserRequestDto {
 
 	@NotEmpty
 	@NotNull
-	private String name;
+	private String userName;
 
 	@NotEmpty
 	@NotNull
 	private String role;
 
+	@NotEmpty
+	@NotNull
 	private String phoneNumber; 
 
-	private String user;
+//	private String user;
 
 	private String password;
 

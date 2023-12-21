@@ -92,6 +92,10 @@ public class Zones_list_Controller {
 					"Zone data not found with the given id : " + zones_listDto.getId(), HttpStatus.BAD_REQUEST,
 					updateZone);
 		}
+		if (updateZone.getName().contains("already found")) {
+			return CustomHttpResponse.responseBuilder("Zone already found please enter unique zone ",
+					HttpStatus.ALREADY_REPORTED, "");
+		}
 		return CustomHttpResponse.responseBuilder("Zone_list ", HttpStatus.OK, updateZone);
 	}
 
