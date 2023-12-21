@@ -18,7 +18,7 @@ public class ZonesUtil {
 		Zones zones = new Zones();
 		zones.setParentZone_id(dto.getParentZone_id());
 		zones.setZone_code(dto.getZone_code());
-		zones.setName(dto.getName().toLowerCase());
+		zones.setName(dto.getName().toUpperCase());
 		return zones;
 	}
 

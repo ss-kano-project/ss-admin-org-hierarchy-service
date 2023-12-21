@@ -1,17 +1,17 @@
 package co.deepmindz.adminorghierservice.controllers;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,6 +44,14 @@ public class ZoneController {
 		return CustomHttpResponse.responseBuilder("All Available Zones", HttpStatus.OK, zonesResponseDto);
 	}
 
+	@GetMapping("/zone/get-all-zones-forRestCall")
+	public Map<String, String> getAllZonesforRestCall() {
+		logger.info("ZoneController.class:getAllZones():get-all-zones");
+		String allString = "";
+		List<ZonesResponseDto> allZones = zoneService.getAllZones(allString);
+		return allZones.stream().collect(Collectors.toMap(z -> z.getName(), z -> z.getZone_id()));
+	}
+
 	@GetMapping("/zone/zone-by-id/{zoneId}")
 	public ResponseEntity<Object> zoneById(@PathVariable String zoneId) {
 		logger.info("ZoneController.class:zoneById():zoneId", zoneId);
@@ -54,7 +62,7 @@ public class ZoneController {
 		return CustomHttpResponse.responseBuilder("Zones not found with zoneId  : " + zoneId, HttpStatus.OK,
 				responseDto);
 	}
-	
+
 	@GetMapping("/zone/zone-by-id")
 	public Object zoneByZoneId(@RequestParam String zoneId) {
 		logger.info("ZoneController.class:zoneByZoneId () : zoneId", zoneId);
@@ -97,7 +105,6 @@ public class ZoneController {
 				zoneId);
 
 	}
-	
 
 	@PostMapping("/clean-All-zone")
 	public ResponseEntity<Object> cleanAllZones() {
