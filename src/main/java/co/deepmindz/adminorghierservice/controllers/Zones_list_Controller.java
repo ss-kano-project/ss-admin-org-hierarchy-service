@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.deepmindz.adminorghierservice.dto.AllZonesByRelationshipIdDTO;
@@ -101,7 +100,6 @@ public class Zones_list_Controller {
 		zones_list_service.deleteZones(zoneId);
 		return CustomHttpResponse.responseBuilder("Zones_list has been deleted with zoneId :" + zoneId, HttpStatus.OK,
 				zoneId);
-
 	}
 
 	@DeleteMapping("/clean-All-zone_list")

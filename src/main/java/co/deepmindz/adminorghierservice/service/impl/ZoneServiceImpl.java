@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import co.deepmindz.adminorghierservice.dto.ZonesRequestDto;
@@ -56,7 +57,8 @@ public class ZoneServiceImpl implements ZoneService {
 		if (!ZonesId.isEmpty()) {
 			zonesResponseDto.addAll(zonesUtil.mapEntityToResponseDto(List.of(zoneRepo.findById(ZonesId).get())));
 		} else {
-			zonesResponseDto.addAll(zonesUtil.mapEntityToResponseDto(zoneRepo.getZonesInHierarchy()));
+			zonesResponseDto.addAll(
+					zonesUtil.mapEntityToResponseDto(zoneRepo.findAll(Sort.by(Sort.Direction.ASC, "createdat"))));
 		}
 		return zonesResponseDto;
 	}
@@ -77,7 +79,7 @@ public class ZoneServiceImpl implements ZoneService {
 		Optional<Zones> zones = zoneRepo.findById(id);
 		if (zones.isPresent()) {
 			zone.setZone_id(zones.get().getZone_id());
-			zone.setCreated_at(zones.get().getCreated_at());
+			zone.setCreatedat(zones.get().getCreatedat());
 			zone.setName(zonesDto.getName().toUpperCase());
 			zone.setParentZone_id(zones.get().getParentZone_id());
 			zone.setZone_code(zones.get().getZone_code());
@@ -101,7 +103,7 @@ public class ZoneServiceImpl implements ZoneService {
 
 	@Override
 	public List<ZonesResponseDto> getZonesHierarchy() {
-		return zonesUtil.mapEntityToResponseDto(zoneRepo.getZonesInHierarchy());
+		return zonesUtil.mapEntityToResponseDto(zoneRepo.findAll(Sort.by(Sort.Direction.ASC, "created_at")));
 	}
 
 	@Override
