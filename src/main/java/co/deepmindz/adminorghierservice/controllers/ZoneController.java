@@ -44,14 +44,6 @@ public class ZoneController {
 		return CustomHttpResponse.responseBuilder("All Available Zones", HttpStatus.OK, zonesResponseDto);
 	}
 
-	@GetMapping("/zone/get-all-zones-forRestCall")
-	public Map<String, String> getAllZonesforRestCall() {
-		logger.info("ZoneController.class:getAllZones():get-all-zones");
-		String allString = "";
-		List<ZonesResponseDto> allZones = zoneService.getAllZones(allString);
-		return allZones.stream().collect(Collectors.toMap(z -> z.getName(), z -> z.getZone_id()));
-	}
-
 	@GetMapping("/zone/zone-by-id/{zoneId}")
 	public ResponseEntity<Object> zoneById(@PathVariable String zoneId) {
 		logger.info("ZoneController.class:zoneById():zoneId", zoneId);
