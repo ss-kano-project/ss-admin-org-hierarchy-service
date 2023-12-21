@@ -27,7 +27,7 @@ public class ZonesUtil {
 		Zones zones = new Zones();
 		zones.setZone_id(zonesDto.getZone_id());
 		zones.setParentZone_id(zonesDto.getParentZone_id());
-		zones.setCreatedat(zonesDto.getCreated_at());
+		zones.setCreated_at(zonesDto.getCreated_at());
 		zones.setZone_code(zonesDto.getZone_code());
 		zones.setName(zonesDto.getName());
 		return zones;
@@ -37,7 +37,7 @@ public class ZonesUtil {
 		List<ZonesResponseDto> listOfDto = new ArrayList<>();
 		for (Zones zone : zones) {
 			listOfDto.add(new ZonesResponseDto(zone.getZone_id(), zone.getParentZone_id(), zone.getName(),
-					zone.getZone_code(), zone.getCreatedat()));
+					zone.getZone_code(), zone.getCreated_at()));
 		}
 		return listOfDto;
 	}
@@ -46,14 +46,14 @@ public class ZonesUtil {
 		List<ZonesResponseDto> listOfDto = new ArrayList<>();
 		for (Zones zone : zones) {
 			listOfDto.add(new ZonesResponseDto(zone.getZone_id(), zone.getParentZone_id(), zone.getName(),
-					zone.getZone_code(), zone.getCreatedat()));
+					zone.getZone_code(), zone.getCreated_at()));
 		}
 		return listOfDto;
 	}
 
 	public ZonesResponseDto mapEntityToResponseDto(Zones zones) {
 		ZonesResponseDto zoneDto = new ZonesResponseDto();
-		zoneDto.setCreated_at(zones.getCreatedat());
+		zoneDto.setCreated_at(zones.getCreated_at());
 		zoneDto.setName(zones.getName());
 		zoneDto.setParentZone_id(zones.getParentZone_id());
 		zoneDto.setZone_code(zones.getZone_code());
@@ -63,7 +63,7 @@ public class ZonesUtil {
 
 	public ZonesResponseDto mapEntityToResponseDto(Optional<Zones> zones) {
 		ZonesResponseDto zoneDto = new ZonesResponseDto();
-		zoneDto.setCreated_at(zones.get().getCreatedat());
+		zoneDto.setCreated_at(zones.get().getCreated_at());
 		zoneDto.setName(zones.get().getName());
 		zoneDto.setParentZone_id(zones.get().getParentZone_id());
 		zoneDto.setZone_code(zones.get().getZone_code());

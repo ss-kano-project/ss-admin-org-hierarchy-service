@@ -36,9 +36,9 @@ public class Zones {
 	@Column(unique = true)
 	private String zone_code;
 
-	@Column(name = "create_at", updatable = false)
+	@Column(updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
-	private Timestamp createdat;
+	private Timestamp created_at;
 
 }

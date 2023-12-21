@@ -58,7 +58,9 @@ public class ZoneServiceImpl implements ZoneService {
 			zonesResponseDto.addAll(zonesUtil.mapEntityToResponseDto(List.of(zoneRepo.findById(ZonesId).get())));
 		} else {
 			zonesResponseDto.addAll(
-					zonesUtil.mapEntityToResponseDto(zoneRepo.findAll(Sort.by(Sort.Direction.ASC, "createdat"))));
+					zonesUtil.mapEntityToResponseDto(zoneRepo.findAll()));
+//			zonesResponseDto.addAll(
+//					zonesUtil.mapEntityToResponseDto(zoneRepo.findAll(Sort.by(Sort.Direction.ASC, "createdat"))));
 		}
 		return zonesResponseDto;
 	}
@@ -79,7 +81,7 @@ public class ZoneServiceImpl implements ZoneService {
 		Optional<Zones> zones = zoneRepo.findById(id);
 		if (zones.isPresent()) {
 			zone.setZone_id(zones.get().getZone_id());
-			zone.setCreatedat(zones.get().getCreatedat());
+			zone.setCreated_at(zones.get().getCreated_at());
 			zone.setName(zonesDto.getName().toUpperCase());
 			zone.setParentZone_id(zones.get().getParentZone_id());
 			zone.setZone_code(zones.get().getZone_code());
@@ -103,7 +105,8 @@ public class ZoneServiceImpl implements ZoneService {
 
 	@Override
 	public List<ZonesResponseDto> getZonesHierarchy() {
-		return zonesUtil.mapEntityToResponseDto(zoneRepo.findAll(Sort.by(Sort.Direction.ASC, "created_at")));
+		return zonesUtil.mapEntityToResponseDto(zoneRepo.getZonesInHierarchy());
+//		return zonesUtil.mapEntityToResponseDto(zoneRepo.findAll(Sort.by(Sort.Direction.ASC, "createdat")));
 	}
 
 	@Override
