@@ -58,7 +58,7 @@ public class ZoneServiceImpl implements ZoneService {
 			zonesResponseDto.addAll(zonesUtil.mapEntityToResponseDto(List.of(zoneRepo.findById(ZonesId).get())));
 		} else {
 			zonesResponseDto.addAll(
-					zonesUtil.mapEntityToResponseDto(zoneRepo.findAll()));
+					zonesUtil.mapEntityToResponseDto(zoneRepo.getZonesInHierarchy()));
 //			zonesResponseDto.addAll(
 //					zonesUtil.mapEntityToResponseDto(zoneRepo.findAll(Sort.by(Sort.Direction.ASC, "createdat"))));
 		}
