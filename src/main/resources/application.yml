@@ -4,7 +4,7 @@ spring:
   config:
     import: optional:configserver:http://config-server-svc:80
   datasource:
-    url: jdbc:postgresql://3.108.1.143:5433/global_uat
+    url: jdbc:postgresql://3.108.1.143:5432/global_uat
     username: postgres
     password: Admi9838(i@123
     driver-class-name: org.postgresql.Driver
