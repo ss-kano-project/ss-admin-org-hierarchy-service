@@ -11,7 +11,7 @@ node{
     branches:[[name:'*/main']],
     extension:[],
     userRemoteConfigs:[[credentialsId:'git',
-    url:'https://github.com/SS-Whitelabel/ss-admin-org-hierarchy-service.git'
+    url:'https://github.com/ss-kano-project/ss-admin-org-hierarchy-service.git'
     ]]])
   }
   stage('Build and Push Image') {
@@ -20,7 +20,7 @@ node{
                           accessKeyVariable: 'AWS_ACCESS_KEY_ID',
                           secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         ]]){
-          sh("aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 738467669398.dkr.ecr.ap-south-1.amazonaws.com")
+          sh("aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 780280600324.dkr.ecr.ap-south-1.amazonaws.com")
           sh("${mvnCMD} clean install jib:build -Dimage=${imageUrl}")
         }
     }
